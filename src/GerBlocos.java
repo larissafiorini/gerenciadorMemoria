@@ -4,13 +4,13 @@ import java.io.IOException;
 
 public class GerBlocos {
 
-	// array Solicitacoes
-	private String solicitacoes[] = null;
+	// array operacoes
+	private String operacoes[];
 	// array Valores
-	private int valores[] = null;
+	private int valores[];
 
-	public String[] getSolicitacoes() {
-		return solicitacoes;
+	public String[] getOperacoes() {
+		return this.operacoes;
 	}
 
 	private int mi;
@@ -33,7 +33,7 @@ public class GerBlocos {
 	}
 
 	public int[] getValores() {
-		return valores;
+		return this.valores;
 	}
 
 	public GerBlocos() {
@@ -63,10 +63,11 @@ public class GerBlocos {
 			this.setMf(mf);
 			System.out.println(mf);
 
-			// array de solicitacoes
-			this.solicitacoes = new String[mf - mi];
+			// array de operacoes
+			this.operacoes = new String[9];
+
 			// array de valores
-			this.valores = new int[mf - mi];
+			this.valores = new int[9];
 
 			// while (br.readLine() != null) {
 			for (int j = 0; j < 9; j++) {
@@ -77,8 +78,8 @@ public class GerBlocos {
 
 				String[] linhas = linha.split(" ");
 				//
-				this.solicitacoes[i] = linhas[0];
-				this.valores[i] = Integer.parseInt(linhas[1]);
+				this.operacoes[j] = linhas[0];
+				this.valores[j] = Integer.parseInt(linhas[1]);
 				//
 				// i++;
 			}
