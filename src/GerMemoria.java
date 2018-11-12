@@ -43,6 +43,8 @@ public class GerMemoria {
 				liberacao(valores[i]);
 			}
 		}
+		System.out.println(bloco_inicial.toString());
+
 		//
 		// for (String op : ger.getOperacoes()) {
 		// System.out.println(op);

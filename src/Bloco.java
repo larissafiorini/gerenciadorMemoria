@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class Bloco {
 	private int i;
@@ -31,4 +32,10 @@ public class Bloco {
 	public int[] getBloco() {
 		return bloco;
 	}
+
+	@Override
+	public String toString() {
+		return "Bloco [" + Arrays.toString(bloco) + "]";
+	}
+
 }
