@@ -4,6 +4,38 @@ import java.io.IOException;
 
 public class GerBlocos {
 
+	// array Solicitacoes
+	private String solicitacoes[] = null;
+	// array Valores
+	private int valores[] = null;
+
+	public String[] getSolicitacoes() {
+		return solicitacoes;
+	}
+
+	private int mi;
+	private int mf;
+
+	public int getMi() {
+		return mi;
+	}
+
+	public void setMi(int mi) {
+		this.mi = mi;
+	}
+
+	public int getMf() {
+		return mf;
+	}
+
+	public void setMf(int mf) {
+		this.mf = mf;
+	}
+
+	public int[] getValores() {
+		return valores;
+	}
+
 	public GerBlocos() {
 
 	}
@@ -15,37 +47,40 @@ public class GerBlocos {
 		int mf;
 
 		int i = 0;
-		String linha = "";
 
 		try (BufferedReader br = new BufferedReader(new FileReader(file_name))) {
 
 			// Le primeira linha com opcao fixo/aleatorio (nao vai ser usada)
-			br.readLine();
+			String op = br.readLine();
+			System.out.println(op);
 
 			// Le mi
 			mi = Integer.parseInt(br.readLine());
+			this.setMi(mi);
+			System.out.println(mi);
 			// Le mf
 			mf = Integer.parseInt(br.readLine());
-			
-			// array de solicitacoes
-			String s[] = new String[mf - mi];
-			// array de valores
-			int v[] = new int[mf - mi];
+			this.setMf(mf);
+			System.out.println(mf);
 
-			while (br.readLine() != null) {
+			// array de solicitacoes
+			this.solicitacoes = new String[mf - mi];
+			// array de valores
+			this.valores = new int[mf - mi];
+
+			// while (br.readLine() != null) {
+			for (int j = 0; j < 9; j++) {
 				// le a linha
-				linha = br.readLine();
-				
+				String linha = br.readLine();
+
 				System.out.println(linha);
-				
-//				String[] linhas = linha.split(" ");
-//
-//				s[i] = linhas[0];
-//				System.out.println( linhas[0]);
-//				v[i] = Integer.parseInt(linhas[1]);
-//				System.out.println(linhas[1]);
-//				
-				i++;
+
+				String[] linhas = linha.split(" ");
+				//
+				this.solicitacoes[i] = linhas[0];
+				this.valores[i] = Integer.parseInt(linhas[1]);
+				//
+				// i++;
 			}
 
 		}

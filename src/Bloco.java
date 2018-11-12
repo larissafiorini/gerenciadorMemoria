@@ -4,6 +4,10 @@ public class Bloco {
 	private int f;
 	private int tamanho;
 
+	public Bloco(int i, int f) {
+
+	}
+
 	public int getI() {
 		return i;
 	}
