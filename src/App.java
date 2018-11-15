@@ -13,7 +13,7 @@ public class App {
 		// ger.readFile(file_name);
 		ger.readFile("teste.txt");
 
-		Bloco b = new Bloco(ger.getMi(), ger.getMf());
+		Bloco b = new Bloco(ger.getMi(), ger.getMf(), 0);
 
 		GerMemoria gerMem = new GerMemoria(ger.getMi(), ger.getMf(), ger, b);
 		

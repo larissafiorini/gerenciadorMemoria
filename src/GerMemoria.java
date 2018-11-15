@@ -28,7 +28,8 @@ public class GerMemoria {
 
 	public void gerenciador() {
 		System.out.println("***GERENCIADOR DE MEMÓRIA***");
-
+		
+		int cont = 0;
 		int[] array_bloco = bloco_inicial.getBloco();
 		System.out.println(array_bloco.length);
 
@@ -38,10 +39,16 @@ public class GerMemoria {
 		for (int i = 0; i < operacoes.length; i++) {
 			System.out.println(operacoes[i]);
 			if (operacoes[i].contains("S")) {
-				solicitacao(valores[i]);
+				Bloco atual = new Bloco(0, valores[i] - 1, cont);
+				boolean s = solicitacao(valores[i], atual);
+				if (s == true) {
+					System.out.println("Solicitação atendida!");
+				} else
+					System.out.println("Deve entrar na fila e aguardar liberação...");
 			} else if (operacoes[i].contains("L")) {
 				liberacao(valores[i]);
 			}
+			cont++;
 		}
 		System.out.println(bloco_inicial.toString());
 
@@ -59,8 +66,38 @@ public class GerMemoria {
 	 * identificador recebido durante a alocação.
 	 * 
 	 */
-	public void solicitacao(int valor) {
+	public boolean solicitacao(int valor, Bloco atual) {
+
 		System.out.println("SOLICITAÇÃO: " + valor);
+
+		int[] array_bloco = bloco_inicial.getBloco();
+
+		boolean flag = false;
+
+		for (int i = 0; i < bloco_inicial.getBloco().length; i++) {
+			System.out.println("I ATUAL : " + i);
+			for (int j = i; j < i + valor; j++) {
+				if (array_bloco[j] == 0) {
+					System.out.println("i: " + i + " j: " + j + " array pos: " + array_bloco[j]);
+					continue;
+				} else {
+					flag = true;
+					break;
+				}
+
+			}
+			if (flag == false) {
+				for (int j = i; j < i + valor; j++) {
+					array_bloco[j] = atual.getId();
+				}
+				bloco_inicial.setBloco(array_bloco);
+				System.out.println(bloco_inicial.toString());
+				return true;
+
+			}
+			flag = false;
+		}
+		return false;
 	}
 
 	public void liberacao(int valor) {

@@ -1,16 +1,27 @@
 import java.util.Arrays;
 
 public class Bloco {
+	private int id;
+
 	private int i;
 	private int f;
 	private int tamanho;
 	private int[] bloco;
 
-	public Bloco(int i, int f) {
+
+	public Bloco(int i, int f, int id) {
 		this.i = i;
 		this.f = f;
 		this.tamanho = this.f - this.i;
+		this.id=id;
 		criaBloco(this.i, this.f, this.tamanho);
+	}
+
+	public void setBloco(int[] bloco) {
+		this.bloco = bloco;
+	}
+	public int getId() {
+		return id;
 	}
 
 	public int getI() {
