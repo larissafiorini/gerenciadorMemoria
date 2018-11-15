@@ -6,6 +6,7 @@ import java.util.Arrays;
  * 
  * 
  * FALTA:: indicar para cada bloco em que endereço está sendo armazenando na memória.
+ * Talvez criar tabela para manter indice de onde cada processo se encontra na memória.
  * */
 
 public class GerMemoria {
@@ -38,7 +39,7 @@ public class GerMemoria {
 	public void gerenciador() {
 		System.out.println("***GERENCIADOR DE MEMÓRIA***");
 
-		int cont = 0; // DEVE SER 1
+		int cont = 1; // DEVE SER 1
 		/*
 		 * P/ BLOCO 7 FUNCIONAR, TEM Q FRAGMENTAR
 		 */
@@ -59,9 +60,12 @@ public class GerMemoria {
 				} else {
 					System.out.println("Deve entrar na fila e aguardar liberação...");
 					fragmentar();
+					System.out.println("Após fragmentaÇao:::::::::::::::::");
+					// CRIAR FILA DE ESPERA AQUI P/ PROCESSOS AGUARDANDO LIBERACAO
+					
+					boolean s2 = solicitacao(valores[i], atual);
+					System.out.println("Conseguiu alocar agora? "+s2);
 				}
-				if (cont == 5)
-					fragmentar();
 				cont++;
 			} else if (operacoes[i].contains("L")) {
 				boolean l = liberacao(valores[i]);
@@ -98,27 +102,33 @@ public class GerMemoria {
 
 		for (int i = 0; i < bloco_inicial.getBloco().length; i++) {
 			// System.out.println("I ATUAL : " + i);
-			if (array_bloco[i] == 0) {
-				for (int j = i; j < i + valor; j++) {
-					if (array_bloco[j] == 0) {
-						// System.out.println("i: " + i + " j: " + j + " array pos: " + array_bloco[j]);
-						continue;
-					} else {
-						flag = true;
-						break;
-					}
+			try {
 
-				}
-				if (flag == false) {
-					System.out.println("atual.getId(): " + atual.getId());
+				if (array_bloco[i] == 0) {
 					for (int j = i; j < i + valor; j++) {
-						array_bloco[j] = atual.getId();
-					}
-					bloco_inicial.setBloco(array_bloco);
-					// System.out.println(bloco_inicial.toString());
-					return true;
+						if (array_bloco[j] == 0) {
+							// System.out.println("i: " + i + " j: " + j + " array pos: " + array_bloco[j]);
+							continue;
+						} else {
+							flag = true;
+							break;
+						}
 
+					}
+					if (flag == false) {
+						System.out.println("atual.getId(): " + atual.getId());
+						for (int j = i; j < i + valor; j++) {
+							array_bloco[j] = atual.getId();
+						}
+						bloco_inicial.setBloco(array_bloco);
+						// System.out.println(bloco_inicial.toString());
+						return true;
+
+					}
 				}
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("Não existe posiçao! + " + e.getMessage());
 			}
 			flag = false;
 		}
@@ -154,6 +164,8 @@ public class GerMemoria {
 		 * Algoritmo de compactaçao: move todos os processos para um extremo da memória.
 		 * Todos buracos se movem para o inicio do array, formando um grande buraco de
 		 * memória disponível.
+		 * 
+		 * Precisa atualizar posição dos blocos na memória para cada um.
 		 */
 		int[] array_bloco = bloco_inicial.getBloco();
 		for (int i = 0; i < array_bloco.length; i++) {
