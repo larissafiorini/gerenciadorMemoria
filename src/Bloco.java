@@ -2,9 +2,12 @@ import java.util.Arrays;
 
 public class Bloco {
 	private int id;
-
+	
+	// posicao inicial e final do bloco na memória
 	private int i;
 	private int f;
+	
+
 	private int tamanho;
 	private int[] bloco;
 
@@ -15,6 +18,14 @@ public class Bloco {
 		this.tamanho = this.f - this.i;
 		this.id=id;
 		criaBloco(this.i, this.f, this.tamanho);
+	}
+
+	public void setI(int i) {
+		this.i = i;
+	}
+
+	public void setF(int f) {
+		this.f = f;
 	}
 
 	public void setBloco(int[] bloco) {

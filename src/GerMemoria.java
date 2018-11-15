@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /*
@@ -18,6 +19,10 @@ public class GerMemoria {
 	private Bloco bloco_inicial;
 
 	private GerBlocos ger;
+
+	private ArrayList<Bloco> fila_espera = new ArrayList<>();
+
+	private ArrayList<Bloco> tabela = new ArrayList<>();
 
 	public GerMemoria(int mi, int mf, GerBlocos g, Bloco b) {
 		this.mi = mi;
@@ -57,24 +62,28 @@ public class GerMemoria {
 				boolean s = solicitacao(valores[i], atual);
 				if (s == true) {
 					System.out.println("Solicitação atendida!");
+					printTabela();
 				} else {
 					System.out.println("Deve entrar na fila e aguardar liberação...");
 					fragmentar();
 					System.out.println("Após fragmentaÇao:::::::::::::::::");
 					// CRIAR FILA DE ESPERA AQUI P/ PROCESSOS AGUARDANDO LIBERACAO
-					
+					this.fila_espera.add(atual);
+
 					boolean s2 = solicitacao(valores[i], atual);
-					System.out.println("Conseguiu alocar agora? "+s2);
+					System.out.println("Conseguiu alocar agora? " + s2);
 				}
 				cont++;
 			} else if (operacoes[i].contains("L")) {
 				boolean l = liberacao(valores[i]);
 				if (l == true) {
 					System.out.println("Liberação realizada!!");
+
+					// PESQUISA NA FILA DE ESPERA SE AGORA PROCESSO CABE, SENÃO FORMATA MSM
 				} else
 					System.out.println("Não conseguiu liberar.");
 			}
-
+			printTabela();
 		}
 		System.out.println(bloco_inicial.toString());
 
@@ -117,10 +126,14 @@ public class GerMemoria {
 					}
 					if (flag == false) {
 						System.out.println("atual.getId(): " + atual.getId());
+						atual.setI(i);
+						atual.setF(i + valor);
 						for (int j = i; j < i + valor; j++) {
 							array_bloco[j] = atual.getId();
 						}
+						this.tabela.add(atual);
 						bloco_inicial.setBloco(array_bloco);
+
 						// System.out.println(bloco_inicial.toString());
 						return true;
 
@@ -165,7 +178,7 @@ public class GerMemoria {
 		 * Todos buracos se movem para o inicio do array, formando um grande buraco de
 		 * memória disponível.
 		 * 
-		 * Precisa atualizar posição dos blocos na memória para cada um.
+		 * Precisa atualizar posição dos blocos na memória para cada um!
 		 */
 		int[] array_bloco = bloco_inicial.getBloco();
 		for (int i = 0; i < array_bloco.length; i++) {
@@ -175,4 +188,10 @@ public class GerMemoria {
 		System.out.println(bloco_inicial.toString());
 	}
 
+	public void printTabela() {
+		for (Bloco bloco : this.tabela) {
+			System.out.println("Print bloco> ");
+			System.out.println(bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF());
+		}
+	}
 }
