@@ -28,7 +28,7 @@ public class GerMemoria {
 
 	public void gerenciador() {
 		System.out.println("***GERENCIADOR DE MEMÓRIA***");
-		
+
 		int cont = 0;
 		int[] array_bloco = bloco_inicial.getBloco();
 		System.out.println(array_bloco.length);
@@ -46,7 +46,11 @@ public class GerMemoria {
 				} else
 					System.out.println("Deve entrar na fila e aguardar liberação...");
 			} else if (operacoes[i].contains("L")) {
-				liberacao(valores[i]);
+				boolean l = liberacao(valores[i]);
+				if (l == true) {
+					System.out.println("Liberação realizada!!");
+				} else
+					System.out.println("Não conseguiu liberar.");
 			}
 			cont++;
 		}
@@ -100,8 +104,27 @@ public class GerMemoria {
 		return false;
 	}
 
-	public void liberacao(int valor) {
-		System.out.println("LIBERAÇÃO: " + valor);
+	public boolean liberacao(int valor) {
+		System.out.println("************LIBERAÇÃO************: " + valor);
+
+		boolean flag = false;
+
+		int[] array_bloco = bloco_inicial.getBloco();
+		for (int i = 0; i < array_bloco.length; i++) {
+			if (array_bloco[i] == valor) {
+				System.out.println(array_bloco[i]);
+				array_bloco[i] = 0;
+				flag = true;
+			}
+		}
+
+		if (flag == true) {
+			System.out.println("Conseguiu liberar!");
+			bloco_inicial.setBloco(array_bloco);
+			System.out.println(bloco_inicial.toString());
+			return true;
+		} else
+			return false;
 	}
 
 }
