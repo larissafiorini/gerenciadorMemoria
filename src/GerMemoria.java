@@ -198,6 +198,8 @@ public class GerMemoria {
 			atual.setI(0);
 			atual.setF(0);
 
+			this.tabela.remove(atual);
+
 			bloco_inicial.setBloco(array_bloco);
 			// System.out.println(bloco_inicial.toString());
 			return true;
@@ -215,9 +217,69 @@ public class GerMemoria {
 		 * Precisa atualizar posição dos blocos na memória para cada um!
 		 */
 		int[] array_bloco = bloco_inicial.getBloco();
-		for (int i = 0; i < array_bloco.length; i++) {
-			Arrays.sort(array_bloco);
+		Arrays.sort(array_bloco);
+
+		// for (int i = 0; i < array_bloco.length; i++) {
+		// Arrays.sort(array_bloco);
+		// }
+
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		boolean check = false;
+		// Get id de cada bloco existente
+		for (Bloco bb : this.tabela) {
+			System.out.println("bloco id: " + bb.getId());
+			for (Integer inte : ids) {
+				if (inte == bb.getId()) {
+
+					check = true;
+
+				}
+			}
+			if (check == false)
+				ids.add(bb.getId());
 		}
+		// remove duplicadas
+		for (int j = 1; j < this.tabela.size(); j++) {
+			if (this.tabela.get(j).getId() == 0) {
+				this.tabela.remove(this.tabela.get(j));
+			}
+		}
+
+		// atualiza tabela com valores após fragmentacao
+		for (int i = 0; i < array_bloco.length; i++) {
+
+			if (array_bloco[i] == 0) {
+
+				this.bloco_inicial.setI(i);
+
+				while (array_bloco[i] == 0) {
+					i++;
+				}
+				this.bloco_inicial.setF(i);
+
+			} else {
+
+				for (int n : ids) {
+
+					if (array_bloco[i] == n) {
+
+						Bloco a = this.getBlocoById(n);
+						a.setI(i);
+
+						while (array_bloco[i] == n) {
+							i++;
+						}
+						a.setF(i);
+
+					}
+				}
+			}
+
+		}
+		System.out.println("bloco de livres: i:  " + this.bloco_inicial.getI() + " f: " + this.bloco_inicial.getF());
+		System.out.println("DEPOIS DA FRAG:::::::");
+		printTabela();
+
 		bloco_inicial.setBloco(array_bloco);
 		System.out.println(bloco_inicial.toString());
 	}
