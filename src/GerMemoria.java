@@ -49,6 +49,9 @@ public class GerMemoria {
 		 * P/ BLOCO 7 FUNCIONAR, TEM Q FRAGMENTAR
 		 */
 		int[] array_bloco = bloco_inicial.getBloco();
+
+		this.tabela.add(bloco_inicial);
+
 		System.out.println(array_bloco.length);
 
 		String[] operacoes = ger.getOperacoes();
@@ -56,30 +59,41 @@ public class GerMemoria {
 
 		for (int i = 0; i < operacoes.length; i++) {
 			System.out.println(operacoes[i]);
+
 			if (operacoes[i].contains("S")) {
+
 				System.out.println("cont : " + cont);
 				Bloco atual = new Bloco(0, valores[i] - 1, cont);
 				boolean s = solicitacao(valores[i], atual);
+
 				if (s == true) {
+
 					System.out.println("Solicitação atendida!");
 					printTabela();
+
 				} else {
+
 					System.out.println("Deve entrar na fila e aguardar liberação...");
+
 					fragmentar();
+
 					System.out.println("Após fragmentaÇao:::::::::::::::::");
 					// CRIAR FILA DE ESPERA AQUI P/ PROCESSOS AGUARDANDO LIBERACAO
 					this.fila_espera.add(atual);
 
 					boolean s2 = solicitacao(valores[i], atual);
 					System.out.println("Conseguiu alocar agora? " + s2);
+
 				}
 				cont++;
 			} else if (operacoes[i].contains("L")) {
+
 				boolean l = liberacao(valores[i]);
 				if (l == true) {
 					System.out.println("Liberação realizada!!");
 
 					// PESQUISA NA FILA DE ESPERA SE AGORA PROCESSO CABE, SENÃO FORMATA MSM
+
 				} else
 					System.out.println("Não conseguiu liberar.");
 			}
@@ -126,11 +140,18 @@ public class GerMemoria {
 					}
 					if (flag == false) {
 						System.out.println("atual.getId(): " + atual.getId());
+						// coloca posicoes da memoria
 						atual.setI(i);
 						atual.setF(i + valor);
+
 						for (int j = i; j < i + valor; j++) {
 							array_bloco[j] = atual.getId();
 						}
+
+						// atualiza bloco inicial
+						this.tabela.get(0).setI((i + valor) + 1);
+
+						// atualiza bloco atual
 						this.tabela.add(atual);
 						bloco_inicial.setBloco(array_bloco);
 
@@ -154,16 +175,29 @@ public class GerMemoria {
 		boolean flag = false;
 
 		int[] array_bloco = bloco_inicial.getBloco();
+
+		Bloco atual = this.getBlocoById(valor);
+		if (atual == null)
+			return false;
+
 		for (int i = 0; i < array_bloco.length; i++) {
+
 			if (array_bloco[i] == valor) {
 				// System.out.println(array_bloco[i]);
+
 				array_bloco[i] = 0;
 				flag = true;
 			}
 		}
 
+		this.tabela.add(bloco_inicial);
+
 		if (flag == true) {
 			System.out.println("Conseguiu liberar!");
+
+			atual.setI(0);
+			atual.setF(0);
+
 			bloco_inicial.setBloco(array_bloco);
 			// System.out.println(bloco_inicial.toString());
 			return true;
@@ -190,8 +224,17 @@ public class GerMemoria {
 
 	public void printTabela() {
 		for (Bloco bloco : this.tabela) {
-			System.out.println("Print bloco> ");
+			System.out.println("Print bloco: ");
 			System.out.println(bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF());
 		}
+	}
+
+	public Bloco getBlocoById(int id) {
+		for (Bloco b : this.tabela) {
+			if (b.getId() == id) {
+				return b;
+			}
+		}
+		return null;
 	}
 }

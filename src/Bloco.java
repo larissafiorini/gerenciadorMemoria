@@ -54,6 +54,7 @@ public class Bloco {
 	public int[] getBloco() {
 		return bloco;
 	}
+	
 
 	@Override
 	public String toString() {
