@@ -22,6 +22,7 @@ public class GerMemoria {
 
 	private ArrayList<Bloco> fila_espera = new ArrayList<>();
 
+	// Tabela que indica que partes da memoria estao livres e quais estao ocupadas
 	private ArrayList<Bloco> tabela = new ArrayList<>();
 
 	public GerMemoria(int mi, int mf, GerBlocos g, Bloco b) {
@@ -31,41 +32,33 @@ public class GerMemoria {
 		this.bloco_inicial = b;
 	}
 
-	/*
-	 * 6. Não é preciso controlar tempo, as alocações e liberações são realizadas na
-	 * ordem que chegarem e puderem ser atendidas. Se uma alocação não puder ser
-	 * atendida, deve ser verificado se ela pode ser atendida no momento que uma
-	 * liberação acontecer.
-	 * 
-	 * 
-	 * 
-	 */
-
 	public void gerenciador() {
-		System.out.println("***GERENCIADOR DE MEMÓRIA***");
+		System.out.println("***GERENCIADOR DE MEMORIA***");
 
-		int cont = 1; // DEVE SER 1
-		/*
-		 * P/ BLOCO 7 FUNCIONAR, TEM Q FRAGMENTAR
-		 */
+		// atribui identificador para cada bloco
+		int id_cont = 1; // DEVE SER 1
+
 		int[] array_bloco = bloco_inicial.getBloco();
 
+		// add bloco com memoria disponivel do endereco mi ate mf
 		this.tabela.add(bloco_inicial);
 
-		System.out.println(array_bloco.length);
-
+		// recebe solicitacoes/liberacoes e seus respectivos valores do arquivo
 		String[] operacoes = ger.getOperacoes();
 		Integer[] valores = ger.getValores();
 
+		// Gerencia todas operacoes solicitadas
 		for (int i = 0; i < operacoes.length; i++) {
 			System.out.println(operacoes[i]);
 
+			// verifica se foi realizada solicitacao de alocacao de memoria
 			if (operacoes[i].contains("S")) {
 
-				System.out.println("cont : " + cont);
-				Bloco atual = new Bloco(0, valores[i] - 1, cont);
+				Bloco atual = new Bloco(0, valores[i] - 1, id_cont);
+				// realiza alocacao
 				int[] s = solicitacao(valores[i], atual);
 
+				// verifica se alocacao conseguiu ser realizada
 				if (s != null) {
 
 					System.out.println("Solicitação atendida!");
@@ -77,23 +70,23 @@ public class GerMemoria {
 
 					fragmentar();
 
-					System.out.println("Após fragmentaÇao:::::::::::::::::");
-					// CRIAR FILA DE ESPERA AQUI P/ PROCESSOS AGUARDANDO LIBERACAO
+					// add processo que nao pode ser executado na fila de espera, aguardando
+					// liberacao
 					this.fila_espera.add(atual);
-
-					// boolean s2 = solicitacao(valores[i], atual);
-					// System.out.println("Conseguiu alocar agora? " + s2);
-
 				}
-				cont++;
+				id_cont++;
+				
+				// verifica se foi realizada solicitacao de liberacao de memoria
 			} else if (operacoes[i].contains("L")) {
 
+				// realiza liberacao
 				int[] l = liberacao(valores[i]);
+
+				// verifica se liberacao conseguiu ser realizada
 				if (l != null) {
 					System.out.println("Liberação realizada!!");
 
-					// PESQUISA NA FILA DE ESPERA SE AGORA PROCESSO CABE, SENÃO FORMATA MSM
-
+					// Verifica se solicitacao pode ser atendida no momento que a liberacao ocorreu
 					executaFilaEspera();
 
 				} else
@@ -105,36 +98,31 @@ public class GerMemoria {
 
 	}
 
-	/*
-	 * 3. A solicitação de memória deve retornar um identificador para a área de
-	 * memória que foi alocada, enquanto o comando de liberação de memória envia o
-	 * identificador recebido durante a alocação.
-	 * 
-	 */
 	public int[] solicitacao(int valor, Bloco atual) {
 
-		System.out.println("SOLICITAÇÃO: " + valor);
+		System.out.println("SOLICITACAO de alocacao: " + valor);
 
 		int[] array_bloco = bloco_inicial.getBloco();
 
-		boolean flag = false;
+		boolean flag = true;
 
 		for (int i = 0; i < bloco_inicial.getBloco().length; i++) {
-			// System.out.println("I ATUAL : " + i);
 			try {
-
+				// procura se ha espaco livre suficiente para alocar para o processo
 				if (array_bloco[i] == 0) {
 					for (int j = i; j < i + valor; j++) {
 						if (array_bloco[j] == 0) {
 							// System.out.println("i: " + i + " j: " + j + " array pos: " + array_bloco[j]);
 							continue;
 						} else {
-							flag = true;
+							// nao conseguiu encontrar espaco livre suficiente 
+							flag = false;
 							break;
 						}
 
 					}
-					if (flag == false) {
+					// se conseguiu realizar solicitacao, atualiza valores da posicao alocada
+					if (flag == true) {
 						System.out.println("atual.getId(): " + atual.getId());
 
 						// coloca posicoes da memoria REVISAR
@@ -157,16 +145,17 @@ public class GerMemoria {
 						bloco_inicial.setBloco(array_bloco);
 
 						// System.out.println(bloco_inicial.toString());
+						
+						// retorna identificador para area de memoria alocada
 						return id_area;
 
 					}
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
 				System.out.println("Não existe posiçao! + " + e.getMessage());
 				return null;
 			}
-			flag = false;
+			flag = true;
 		}
 		return null;
 	}
@@ -183,10 +172,8 @@ public class GerMemoria {
 			return null;
 
 		for (int i = 0; i < array_bloco.length; i++) {
-
+			// realiza liberacao do bloco solicitado
 			if (array_bloco[i] == valor) {
-				// System.out.println(array_bloco[i]);
-
 				array_bloco[i] = 0;
 				flag = true;
 			}

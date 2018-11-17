@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 /*
  * Nome: Larissa Fiorini Martins
@@ -14,7 +15,8 @@ public class App {
 		// System.out.println("Insira o nome do arquivo: ");
 		// String file_name = scan.nextLine();
 		// scan.close();
-
+		
+		
 		GerBlocos ger = new GerBlocos();
 		// ger.readFile(file_name);
 		ger.readFile("teste.txt");
