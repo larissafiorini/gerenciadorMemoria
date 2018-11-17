@@ -81,8 +81,8 @@ public class GerMemoria {
 					// CRIAR FILA DE ESPERA AQUI P/ PROCESSOS AGUARDANDO LIBERACAO
 					this.fila_espera.add(atual);
 
-					boolean s2 = solicitacao(valores[i], atual);
-					System.out.println("Conseguiu alocar agora? " + s2);
+					// boolean s2 = solicitacao(valores[i], atual);
+//					System.out.println("Conseguiu alocar agora? " + s2);
 
 				}
 				cont++;
@@ -93,6 +93,8 @@ public class GerMemoria {
 					System.out.println("Liberação realizada!!");
 
 					// PESQUISA NA FILA DE ESPERA SE AGORA PROCESSO CABE, SENÃO FORMATA MSM
+
+					podeExecutar();
 
 				} else
 					System.out.println("Não conseguiu liberar.");
@@ -298,5 +300,14 @@ public class GerMemoria {
 			}
 		}
 		return null;
+	}
+
+	public void podeExecutar() {
+		// depois que ocorre liberação, pesquisa se algum processo pode executar
+		for (Bloco bloco : this.fila_espera) {
+
+			this.solicitacao(bloco.getF() - bloco.getI(), bloco);
+
+		}
 	}
 }
