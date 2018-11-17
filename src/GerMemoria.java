@@ -64,9 +64,9 @@ public class GerMemoria {
 
 				System.out.println("cont : " + cont);
 				Bloco atual = new Bloco(0, valores[i] - 1, cont);
-				boolean s = solicitacao(valores[i], atual);
+				int[] s = solicitacao(valores[i], atual);
 
-				if (s == true) {
+				if (s != null) {
 
 					System.out.println("Solicitação atendida!");
 					printTabela();
@@ -82,19 +82,19 @@ public class GerMemoria {
 					this.fila_espera.add(atual);
 
 					// boolean s2 = solicitacao(valores[i], atual);
-//					System.out.println("Conseguiu alocar agora? " + s2);
+					// System.out.println("Conseguiu alocar agora? " + s2);
 
 				}
 				cont++;
 			} else if (operacoes[i].contains("L")) {
 
-				boolean l = liberacao(valores[i]);
-				if (l == true) {
+				int[] l = liberacao(valores[i]);
+				if (l != null) {
 					System.out.println("Liberação realizada!!");
 
 					// PESQUISA NA FILA DE ESPERA SE AGORA PROCESSO CABE, SENÃO FORMATA MSM
 
-					podeExecutar();
+					executaFilaEspera();
 
 				} else
 					System.out.println("Não conseguiu liberar.");
@@ -103,12 +103,6 @@ public class GerMemoria {
 		}
 		System.out.println(bloco_inicial.toString());
 
-		//
-		// for (String op : ger.getOperacoes()) {
-		// System.out.println(op);
-		//
-		//
-		// }
 	}
 
 	/*
@@ -117,7 +111,7 @@ public class GerMemoria {
 	 * identificador recebido durante a alocação.
 	 * 
 	 */
-	public boolean solicitacao(int valor, Bloco atual) {
+	public int[] solicitacao(int valor, Bloco atual) {
 
 		System.out.println("SOLICITAÇÃO: " + valor);
 
@@ -142,9 +136,14 @@ public class GerMemoria {
 					}
 					if (flag == false) {
 						System.out.println("atual.getId(): " + atual.getId());
-						// coloca posicoes da memoria
+
+						// coloca posicoes da memoria REVISAR
 						atual.setI(i);
 						atual.setF(i + valor);
+
+						int[] id_area = new int[2];
+						id_area[0] = i;
+						id_area[1] = i + valor;
 
 						for (int j = i; j < i + valor; j++) {
 							array_bloco[j] = atual.getId();
@@ -158,20 +157,21 @@ public class GerMemoria {
 						bloco_inicial.setBloco(array_bloco);
 
 						// System.out.println(bloco_inicial.toString());
-						return true;
+						return id_area;
 
 					}
 				}
 			} catch (Exception e) {
 				// TODO: handle exception
 				System.out.println("Não existe posiçao! + " + e.getMessage());
+				return null;
 			}
 			flag = false;
 		}
-		return false;
+		return null;
 	}
 
-	public boolean liberacao(int valor) {
+	public int[] liberacao(int valor) {
 		System.out.println("************LIBERAÇÃO************: " + valor);
 
 		boolean flag = false;
@@ -180,7 +180,7 @@ public class GerMemoria {
 
 		Bloco atual = this.getBlocoById(valor);
 		if (atual == null)
-			return false;
+			return null;
 
 		for (int i = 0; i < array_bloco.length; i++) {
 
@@ -197,6 +197,10 @@ public class GerMemoria {
 		if (flag == true) {
 			System.out.println("Conseguiu liberar!");
 
+			int[] id_area = new int[2];
+			id_area[0] = atual.getI();
+			id_area[1] = atual.getF();
+
 			atual.setI(0);
 			atual.setF(0);
 
@@ -204,9 +208,10 @@ public class GerMemoria {
 
 			bloco_inicial.setBloco(array_bloco);
 			// System.out.println(bloco_inicial.toString());
-			return true;
+
+			return id_area;
 		} else
-			return false;
+			return null;
 	}
 
 	public void fragmentar() {
@@ -252,7 +257,7 @@ public class GerMemoria {
 
 			if (array_bloco[i] == 0) {
 
-				this.bloco_inicial.setI(i);
+				this.bloco_inicial.setI(i + 1);
 
 				while (array_bloco[i] == 0) {
 					i++;
@@ -266,7 +271,7 @@ public class GerMemoria {
 					if (array_bloco[i] == n) {
 
 						Bloco a = this.getBlocoById(n);
-						a.setI(i);
+						a.setI(i + 1);
 
 						while (array_bloco[i] == n) {
 							i++;
@@ -302,7 +307,7 @@ public class GerMemoria {
 		return null;
 	}
 
-	public void podeExecutar() {
+	public void executaFilaEspera() {
 		// depois que ocorre liberação, pesquisa se algum processo pode executar
 		for (Bloco bloco : this.fila_espera) {
 

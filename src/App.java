@@ -1,5 +1,11 @@
 import java.io.IOException;
 import java.util.Scanner;
+/*
+ * Nome: Larissa Fiorini Martins
+ * 
+ * Gerencia de memoria por particoes variaveis
+ * 
+ * */
 
 public class App {
 	public static void main(String[] args) throws IOException {
@@ -13,10 +19,12 @@ public class App {
 		// ger.readFile(file_name);
 		ger.readFile("teste.txt");
 
+		// cria bloco inicial
 		Bloco b = new Bloco(ger.getMi(), ger.getMf(), 0);
 
 		GerMemoria gerMem = new GerMemoria(ger.getMi(), ger.getMf(), ger, b);
-
+		
+		// realiza gerenciamento de memoria
 		gerMem.gerenciador();
 
 	}
