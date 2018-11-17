@@ -16,8 +16,8 @@ public class App {
 		Bloco b = new Bloco(ger.getMi(), ger.getMf(), 0);
 
 		GerMemoria gerMem = new GerMemoria(ger.getMi(), ger.getMf(), ger, b);
-		
+
 		gerMem.gerenciador();
-		
+
 	}
 }

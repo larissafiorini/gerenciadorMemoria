@@ -55,7 +55,7 @@ public class GerMemoria {
 		System.out.println(array_bloco.length);
 
 		String[] operacoes = ger.getOperacoes();
-		int[] valores = ger.getValores();
+		Integer[] valores = ger.getValores();
 
 		for (int i = 0; i < operacoes.length; i++) {
 			System.out.println(operacoes[i]);

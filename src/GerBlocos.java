@@ -1,13 +1,15 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GerBlocos {
 
 	// array operacoes
 	private String operacoes[];
 	// array Valores
-	private int valores[];
+	private Integer valores[];
 
 	public String[] getOperacoes() {
 		return this.operacoes;
@@ -32,7 +34,7 @@ public class GerBlocos {
 		this.mf = mf;
 	}
 
-	public int[] getValores() {
+	public Integer[] getValores() {
 		return this.valores;
 	}
 
@@ -45,8 +47,7 @@ public class GerBlocos {
 
 		int mi;
 		int mf;
-
-		int i = 0;
+		String linha;
 
 		try (BufferedReader br = new BufferedReader(new FileReader(file_name))) {
 
@@ -63,26 +64,27 @@ public class GerBlocos {
 			this.setMf(mf);
 			System.out.println(mf);
 
-			// array de operacoes
-			this.operacoes = new String[9];
+			List<String> opList = new ArrayList<String>();
+			List<Integer> valList = new ArrayList<Integer>();
 
-			// array de valores
-			this.valores = new int[9];
-
-			// while (br.readLine() != null) {
-			for (int j = 0; j < 9; j++) {
-				// le a linha
-				String linha = br.readLine();
+			// le cada linha do arquivo com solicitacoes e liberacoes
+			while ((linha = br.readLine()) != null) {
 
 				System.out.println(linha);
 
 				String[] linhas = linha.split(" ");
-				//
-				this.operacoes[j] = linhas[0];
-				this.valores[j] = Integer.parseInt(linhas[1]);
-				//
-				// i++;
+
+				opList.add(linhas[0]);
+				valList.add(Integer.parseInt(linhas[1]));
+
 			}
+			// preenche array com operacoes de solicitacao/liberacao
+			this.operacoes = new String[opList.size()];
+			this.operacoes = opList.toArray(this.operacoes);
+
+			this.valores = new Integer[valList.size()];
+			this.valores = valList.toArray(this.valores);
+
 
 		}
 
