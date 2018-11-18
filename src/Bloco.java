@@ -3,6 +3,11 @@ import java.util.Arrays;
 public class Bloco {
 	private int id;
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
 	// posicao inicial e final do bloco na memória
 	private int i;
 	private int f;

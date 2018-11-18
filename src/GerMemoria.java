@@ -131,18 +131,23 @@ public class GerMemoria {
 					// se conseguiu realizar solicitacao, atualiza valores da posicao alocada
 					if (flag == true) {
 						System.out.println("atual.getId(): " + atual.getId());
+						
+						System.out.println(array_bloco[i]);
+						System.out.println(array_bloco[i-1]);
+						System.out.println(array_bloco[i-2]);
+						System.out.println(array_bloco[i+1]);
 
 						// coloca posicoes da memoria REVISAR
-						atual.setI(i);
-						atual.setF(i + valor);
+						atual.setI(i-1);
+						atual.setF((i-1) + valor);
 
 						int[] id_area = new int[2];
-						id_area[0] = i;
+						id_area[0] = i-1;
 						System.out.println(id_area[0]);
-						id_area[1] = valor + i;
+						id_area[1] = (i-1) + valor;
 						System.out.println(id_area[1]);
 
-						for (int j = i; j < i + valor; j++) {
+						for (int j = i-1; j < i + valor; j++) {
 							array_bloco[j] = atual.getId();
 						}
 
@@ -178,10 +183,15 @@ public class GerMemoria {
 		int[] array_bloco = bloco_inicial.getBloco();
 
 		Bloco atual = this.getBlocoById(valor);
+
+		System.out.println(atual.getId());
+		System.out.println(atual.getI());
+		System.out.println(atual.getF());
+
 		if (atual == null)
 			return null;
 
-		for (int i = this.bloco_inicial.getI(); i < array_bloco.length; i++) {
+		for (int i = atual.getI(); i < atual.getF(); i++) {
 			// realiza liberacao do bloco solicitado
 			if (array_bloco[i] == valor) {
 				array_bloco[i] = 0;
@@ -189,8 +199,10 @@ public class GerMemoria {
 			}
 		}
 
-		this.tabela.add(bloco_inicial);
-		printTabela();
+		System.out.println(bloco_inicial.toString());
+
+		// this.tabela.add(bloco_inicial);
+		// printTabela();
 
 		if (flag == true) {
 			System.out.println("Conseguiu liberar!");
@@ -199,14 +211,17 @@ public class GerMemoria {
 			id_area[0] = atual.getI();
 			id_area[1] = atual.getF();
 
-			atual.setI(0);
-			atual.setF(0);
+			// this.tabela.remove(atual);
 
-			this.tabela.remove(atual);
+			// seta como bloco livre
+			atual.setId(0);
+
+			// atual.setI(0);
+			// atual.setF(0);
 
 			bloco_inicial.setBloco(array_bloco);
 			// System.out.println(bloco_inicial.toString());
-
+			printTabela();
 			return id_area;
 		} else
 			return null;
@@ -291,10 +306,14 @@ public class GerMemoria {
 
 	public void printTabela() {
 		System.out.println("\n PRINT TABELA ");
-		System.out.println(" \nid: 0 => livres ");
+//		System.out.println(" \nid: 0 => livres ");
 		for (Bloco bloco : this.tabela) {
 			System.out.println("\nPrint bloco: ");
-			System.out.println("id: " + bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF());
+			
+			if(bloco.getId() == 0)
+				System.out.println("id: LIVRE inicio: " + bloco.getI() + " fim: " + bloco.getF());
+			else
+				System.out.println("id: " + bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF());
 		}
 	}
 
