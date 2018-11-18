@@ -12,10 +12,11 @@ public class Bloco {
 	private int[] bloco;
 
 
-	public Bloco(int i, int f, int id) {
+	public Bloco(int i, int f, int t, int id) {
 		this.i = i;
 		this.f = f;
-		this.tamanho = this.f - this.i;
+//		this.tamanho = this.f - this.i;
+		this.tamanho = t;
 		this.id=id;
 		criaBloco(this.i, this.f, this.tamanho);
 	}

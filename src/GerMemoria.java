@@ -40,8 +40,13 @@ public class GerMemoria {
 
 		int[] array_bloco = bloco_inicial.getBloco();
 
+		System.out.println(this.bloco_inicial.getI());
+		System.out.println(this.bloco_inicial.getF());
+		System.out.println(this.bloco_inicial.getTamanho());
+
 		// add bloco com memoria disponivel do endereco mi ate mf
 		this.tabela.add(bloco_inicial);
+		printTabela();
 
 		// recebe solicitacoes/liberacoes e seus respectivos valores do arquivo
 		String[] operacoes = ger.getOperacoes();
@@ -54,7 +59,9 @@ public class GerMemoria {
 			// verifica se foi realizada solicitacao de alocacao de memoria
 			if (operacoes[i].contains("S")) {
 
-				Bloco atual = new Bloco(0, valores[i] - 1, id_cont);
+				Bloco atual = new Bloco(this.bloco_inicial.getI(), this.bloco_inicial.getI() + (valores[i] - 1),
+						this.bloco_inicial.getI() + (valores[i] - 1), id_cont);
+
 				// realiza alocacao
 				int[] s = solicitacao(valores[i], atual);
 
@@ -75,7 +82,7 @@ public class GerMemoria {
 					this.fila_espera.add(atual);
 				}
 				id_cont++;
-				
+
 				// verifica se foi realizada solicitacao de liberacao de memoria
 			} else if (operacoes[i].contains("L")) {
 
@@ -106,7 +113,7 @@ public class GerMemoria {
 
 		boolean flag = true;
 
-		for (int i = 0; i < bloco_inicial.getBloco().length; i++) {
+		for (int i = this.bloco_inicial.getI(); i < bloco_inicial.getBloco().length; i++) {
 			try {
 				// procura se ha espaco livre suficiente para alocar para o processo
 				if (array_bloco[i] == 0) {
@@ -115,7 +122,7 @@ public class GerMemoria {
 							// System.out.println("i: " + i + " j: " + j + " array pos: " + array_bloco[j]);
 							continue;
 						} else {
-							// nao conseguiu encontrar espaco livre suficiente 
+							// nao conseguiu encontrar espaco livre suficiente
 							flag = false;
 							break;
 						}
@@ -131,7 +138,9 @@ public class GerMemoria {
 
 						int[] id_area = new int[2];
 						id_area[0] = i;
-						id_area[1] = i + valor;
+						System.out.println(id_area[0]);
+						id_area[1] = valor + i;
+						System.out.println(id_area[1]);
 
 						for (int j = i; j < i + valor; j++) {
 							array_bloco[j] = atual.getId();
@@ -142,10 +151,11 @@ public class GerMemoria {
 
 						// atualiza bloco atual
 						this.tabela.add(atual);
+						printTabela();
 						bloco_inicial.setBloco(array_bloco);
 
 						// System.out.println(bloco_inicial.toString());
-						
+
 						// retorna identificador para area de memoria alocada
 						return id_area;
 
@@ -171,7 +181,7 @@ public class GerMemoria {
 		if (atual == null)
 			return null;
 
-		for (int i = 0; i < array_bloco.length; i++) {
+		for (int i = this.bloco_inicial.getI(); i < array_bloco.length; i++) {
 			// realiza liberacao do bloco solicitado
 			if (array_bloco[i] == valor) {
 				array_bloco[i] = 0;
@@ -180,6 +190,7 @@ public class GerMemoria {
 		}
 
 		this.tabela.add(bloco_inicial);
+		printTabela();
 
 		if (flag == true) {
 			System.out.println("Conseguiu liberar!");
@@ -233,14 +244,14 @@ public class GerMemoria {
 				ids.add(bb.getId());
 		}
 		// remove duplicadas
-		for (int j = 1; j < this.tabela.size(); j++) {
-			if (this.tabela.get(j).getId() == 0) {
-				this.tabela.remove(this.tabela.get(j));
-			}
-		}
+		// for (int j = 1; j < this.tabela.size(); j++) {
+		// if (this.tabela.get(j).getId() == 0) {
+		// this.tabela.remove(this.tabela.get(j));
+		// }
+		// }
 
 		// atualiza tabela com valores após fragmentacao
-		for (int i = 0; i < array_bloco.length; i++) {
+		for (int i = this.bloco_inicial.getI(); i < array_bloco.length; i++) {
 
 			if (array_bloco[i] == 0) {
 
@@ -279,9 +290,11 @@ public class GerMemoria {
 	}
 
 	public void printTabela() {
+		System.out.println("\n PRINT TABELA ");
+		System.out.println(" \nid: 0 => livres ");
 		for (Bloco bloco : this.tabela) {
-			System.out.println("Print bloco: ");
-			System.out.println(bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF());
+			System.out.println("\nPrint bloco: ");
+			System.out.println("id: " + bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF());
 		}
 	}
 
