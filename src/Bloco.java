@@ -2,28 +2,29 @@ import java.util.Arrays;
 
 public class Bloco {
 	private int id;
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-
 
 	// posicao inicial e final do bloco na memória
 	private int i;
 	private int f;
-	
 
 	private int tamanho;
-	private int[] bloco;
 
+	private int[] bloco;
 
 	public Bloco(int i, int f, int t, int id) {
 		this.i = i;
 		this.f = f;
-//		this.tamanho = this.f - this.i;
 		this.tamanho = t;
-		this.id=id;
+		this.id = id;
 		criaBloco(this.i, this.f, this.tamanho);
+	}
+
+	public void setTamanho(int tamanho) {
+		this.tamanho = tamanho;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setI(int i) {
@@ -37,6 +38,7 @@ public class Bloco {
 	public void setBloco(int[] bloco) {
 		this.bloco = bloco;
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -60,7 +62,6 @@ public class Bloco {
 	public int[] getBloco() {
 		return bloco;
 	}
-	
 
 	@Override
 	public String toString() {

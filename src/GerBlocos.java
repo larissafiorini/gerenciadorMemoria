@@ -53,24 +53,20 @@ public class GerBlocos {
 
 			// Le primeira linha com opcao fixo/aleatorio (nao vai ser usada)
 			String op = br.readLine();
-			System.out.println(op);
 
 			// Le mi
 			mi = Integer.parseInt(br.readLine());
 			this.setMi(mi);
-			System.out.println(mi);
+
 			// Le mf
 			mf = Integer.parseInt(br.readLine());
 			this.setMf(mf);
-			System.out.println(mf);
 
 			List<String> opList = new ArrayList<String>();
 			List<Integer> valList = new ArrayList<Integer>();
 
 			// le cada linha do arquivo com solicitacoes e liberacoes
 			while ((linha = br.readLine()) != null) {
-
-				System.out.println(linha);
 
 				String[] linhas = linha.split(" ");
 
@@ -84,9 +80,6 @@ public class GerBlocos {
 
 			this.valores = new Integer[valList.size()];
 			this.valores = valList.toArray(this.valores);
-
-
 		}
-
 	}
 }
