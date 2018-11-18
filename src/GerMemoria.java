@@ -2,12 +2,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /*
- * Gerencia solicitações e liberações. Quando falta espaço, realiza fragmentação.
+ * Gerencia solicitações de alocacoes e liberacoes. Quando falta espaco, realiza fragmentacao.
  * Uso do algoritmo First Fit para alocacoes.
  * 
  * 
- * FALTA:: indicar para cada bloco em que endereço está sendo armazenando na memória.
- * Talvez criar tabela para manter indice de onde cada processo se encontra na memória.
  * */
 
 public class GerMemoria {
@@ -36,7 +34,7 @@ public class GerMemoria {
 		System.out.println("***GERENCIADOR DE MEMORIA***");
 
 		// atribui identificador para cada bloco
-		int id_cont = 1; // DEVE SER 1
+		int id_cont = 1; 
 
 		int[] array_bloco = bloco_inicial.getBloco();
 
@@ -46,7 +44,7 @@ public class GerMemoria {
 
 		// add bloco com memoria disponivel do endereco mi ate mf
 		this.tabela.add(bloco_inicial);
-		printTabela();
+//		printTabela();
 
 		// recebe solicitacoes/liberacoes e seus respectivos valores do arquivo
 		String[] operacoes = ger.getOperacoes();
@@ -54,13 +52,13 @@ public class GerMemoria {
 
 		// Gerencia todas operacoes solicitadas
 		for (int i = 0; i < operacoes.length; i++) {
-			System.out.println(operacoes[i]);
+			System.out.println(operacoes[i]+ " "+valores[i]);
 
 			// verifica se foi realizada solicitacao de alocacao de memoria
 			if (operacoes[i].contains("S")) {
 
 				Bloco atual = new Bloco(this.bloco_inicial.getI(), this.bloco_inicial.getI() + (valores[i] - 1),
-						this.bloco_inicial.getI() + (valores[i] - 1), id_cont);
+						valores[i], id_cont);
 
 				// realiza alocacao
 				int[] s = solicitacao(valores[i], atual);
@@ -76,7 +74,12 @@ public class GerMemoria {
 					System.out.println("Deve entrar na fila e aguardar liberação...");
 
 					fragmentar();
-
+					printTabela();
+					
+					int[] s2= solicitacao(valores[i], atual);
+				
+					printTabela();
+					System.out.println(bloco_inicial.toString());
 					// add processo que nao pode ser executado na fila de espera, aguardando
 					// liberacao
 					this.fila_espera.add(atual);
@@ -99,7 +102,6 @@ public class GerMemoria {
 				} else
 					System.out.println("Não conseguiu liberar.");
 			}
-			printTabela();
 		}
 		System.out.println(bloco_inicial.toString());
 
@@ -131,32 +133,31 @@ public class GerMemoria {
 					// se conseguiu realizar solicitacao, atualiza valores da posicao alocada
 					if (flag == true) {
 						System.out.println("atual.getId(): " + atual.getId());
-						
+
 						System.out.println(array_bloco[i]);
-						System.out.println(array_bloco[i-1]);
-						System.out.println(array_bloco[i-2]);
-						System.out.println(array_bloco[i+1]);
+						System.out.println(array_bloco[i - 1]);
+						System.out.println(array_bloco[i - 2]);
+						System.out.println(array_bloco[i + 1]);
 
 						// coloca posicoes da memoria REVISAR
-						atual.setI(i-1);
-						atual.setF((i-1) + valor);
+						atual.setI(i);
+						atual.setF(i + valor);
 
 						int[] id_area = new int[2];
-						id_area[0] = i-1;
+						id_area[0] = i - 1;
 						System.out.println(id_area[0]);
-						id_area[1] = (i-1) + valor;
+						id_area[1] = (i - 1) + valor;
 						System.out.println(id_area[1]);
 
-						for (int j = i-1; j < i + valor; j++) {
+						for (int j = i - 1; j < i + valor; j++) {
 							array_bloco[j] = atual.getId();
 						}
 
 						// atualiza bloco inicial
-						this.tabela.get(0).setI((i + valor) + 1);
+						this.tabela.get(0).setI(i + valor);
 
 						// atualiza bloco atual
 						this.tabela.add(atual);
-						printTabela();
 						bloco_inicial.setBloco(array_bloco);
 
 						// System.out.println(bloco_inicial.toString());
@@ -221,14 +222,14 @@ public class GerMemoria {
 
 			bloco_inicial.setBloco(array_bloco);
 			// System.out.println(bloco_inicial.toString());
-			printTabela();
+//			printTabela();
 			return id_area;
 		} else
 			return null;
 	}
 
 	public void fragmentar() {
-		System.out.println("***FRAGMENTAÇÃO***");
+		System.out.println("\n***FRAGMENTAÇÃO***\n");
 		/*
 		 * Algoritmo de compactaçao: move todos os processos para um extremo da memória.
 		 * Todos buracos se movem para o inicio do array, formando um grande buraco de
@@ -236,6 +237,7 @@ public class GerMemoria {
 		 * 
 		 * Precisa atualizar posição dos blocos na memória para cada um!
 		 */
+		
 		int[] array_bloco = bloco_inicial.getBloco();
 		Arrays.sort(array_bloco);
 
@@ -259,23 +261,30 @@ public class GerMemoria {
 				ids.add(bb.getId());
 		}
 		// remove duplicadas
-		// for (int j = 1; j < this.tabela.size(); j++) {
-		// if (this.tabela.get(j).getId() == 0) {
-		// this.tabela.remove(this.tabela.get(j));
-		// }
-		// }
+		 for (int j = 1; j < this.tabela.size(); j++) {
+		 if (this.tabela.get(j).getId() == 0) {
+		 this.tabela.remove(this.tabela.get(j));
+		 }
+		 }
 
+		System.out.println(this.bloco_inicial.getI());
+		System.out.println(this.mi);
+		System.out.println(this.mf);
+		System.out.println(this.bloco_inicial.getF());
+		System.out.println(array_bloco.length);
+		
 		// atualiza tabela com valores após fragmentacao
-		for (int i = this.bloco_inicial.getI(); i < array_bloco.length; i++) {
+		for (int i = this.mi; i < array_bloco.length; i++) {
 
 			if (array_bloco[i] == 0) {
 
-				this.bloco_inicial.setI(i + 1);
-
+				this.bloco_inicial.setI(i+1);
+				System.out.println(this.bloco_inicial.getI());
 				while (array_bloco[i] == 0) {
 					i++;
 				}
 				this.bloco_inicial.setF(i);
+				System.out.println(this.bloco_inicial.getF());
 
 			} else {
 
@@ -306,16 +315,20 @@ public class GerMemoria {
 
 	public void printTabela() {
 		System.out.println("\n PRINT TABELA ");
-//		System.out.println(" \nid: 0 => livres ");
+		// System.out.println(" \nid: 0 => livres ");
 		for (Bloco bloco : this.tabela) {
 			System.out.println("\nPrint bloco: ");
-			
-			if(bloco.getId() == 0)
-				System.out.println("id: LIVRE inicio: " + bloco.getI() + " fim: " + bloco.getF());
+
+			if (bloco.getId() == 0)
+				System.out.println("id: LIVRE inicio: " + bloco.getI() + " fim: " + bloco.getF() + " (tamanho: "
+						+ bloco.getTamanho() + ") ");
 			else
-				System.out.println("id: " + bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF());
+				System.out.println("id: " + bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF()
+						+ " (tamanho: " + bloco.getTamanho() + ") ");
 		}
 	}
+
+
 
 	public Bloco getBlocoById(int id) {
 		for (Bloco b : this.tabela) {
@@ -334,4 +347,5 @@ public class GerMemoria {
 
 		}
 	}
+
 }
