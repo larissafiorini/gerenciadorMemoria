@@ -79,7 +79,7 @@ public class GerMemoria {
 					fragmentar();
 					printTabela();
 
-					int[] s2 = solicitacao(valores[i], atual);
+//					int[] s2 = solicitacao(valores[i], atual);
 					
 //
 //					System.out.println("ALOCADO: " + s2[0] + " , " + s2[1]);
@@ -192,7 +192,8 @@ public class GerMemoria {
 		if (atual == null)
 			return null;
 
-		for (int i = atual.getI(); i < atual.getF(); i++) {
+//		for (int i = atual.getI(); i < atual.getF(); i++) {
+		for (int i = this.mi; i < array_bloco.length; i++) {
 			// realiza liberacao do bloco solicitado
 			if (array_bloco[i] == valor) {
 				array_bloco[i] = 0;
