@@ -80,8 +80,9 @@ public class GerMemoria {
 					printTabela();
 
 					int[] s2 = solicitacao(valores[i], atual);
-
-					System.out.println("ALOCADO: " + s2[0] + " , " + s2[1]);
+					
+//
+//					System.out.println("ALOCADO: " + s2[0] + " , " + s2[1]);
 
 					printTabela();
 					System.out.println(bloco_inicial.toString());
@@ -125,7 +126,7 @@ public class GerMemoria {
 
 		boolean flag = true;
 
-		for (int i = this.bloco_inicial.getI(); i < array_bloco.length; i++) {
+		for (int i = this.mi; i < array_bloco.length; i++) {
 			try {
 				// procura se ha espaco livre suficiente para alocar para o processo
 				if (array_bloco[i] == 0) {
