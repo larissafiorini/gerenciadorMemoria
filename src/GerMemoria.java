@@ -63,7 +63,6 @@ public class GerMemoria {
 				// realiza alocacao
 				int[] s = solicitacao(valores[i], atual);
 
-
 				// verifica se alocacao conseguiu ser realizada
 				if (s != null) {
 
@@ -122,10 +121,11 @@ public class GerMemoria {
 		System.out.println("SOLICITACAO de alocacao: " + valor);
 
 		int[] array_bloco = bloco_inicial.getBloco();
+		System.out.println("tamanho na solicitacao" +array_bloco.length);
 
 		boolean flag = true;
 
-		for (int i = this.bloco_inicial.getI(); i < bloco_inicial.getBloco().length; i++) {
+		for (int i = this.bloco_inicial.getI(); i < array_bloco.length; i++) {
 			try {
 				// procura se ha espaco livre suficiente para alocar para o processo
 				if (array_bloco[i] == 0) {
@@ -148,12 +148,12 @@ public class GerMemoria {
 						atual.setF(i + valor);
 
 						int[] id_area = new int[2];
-						
+
 						id_area[0] = i;
-						
+
 						id_area[1] = i + valor;
 
-						for (int j = i ; j < i + valor; j++) {
+						for (int j = i; j < i + valor; j++) {
 							array_bloco[j] = atual.getId();
 						}
 
@@ -226,6 +226,57 @@ public class GerMemoria {
 
 	public void fragmentar() {
 		System.out.println("\n***FRAGMENTAÇÃO***\n");
+
+		int[] array_bloco = bloco_inicial.getBloco();
+		System.out.println(array_bloco.length);
+
+		printTabela();
+		System.out.println(bloco_inicial.toString());
+
+		for (int i = 0; i < array_bloco.length; i++) {
+			System.out.println("i: " + i + " " + array_bloco[i]);
+		}
+
+		System.out.println(this.bloco_inicial.getI());
+		System.out.println(this.mi);
+
+		Arrays.sort(array_bloco);
+
+		ArrayList<Bloco> novatab = new ArrayList<Bloco>();
+		
+		Bloco teste =this.getBlocoById(0);
+		this.tabela.remove(this.tabela.indexOf(teste));
+		teste =this.getBlocoById(0);
+		this.tabela.remove(this.tabela.indexOf(teste));
+		teste =this.getBlocoById(0);
+		this.tabela.remove(this.tabela.indexOf(teste));
+
+		
+		
+		System.out.println("Tabela dentro de frag testing... " +array_bloco.length);
+		for (Bloco bloco : this.tabela) {
+			System.out.println(bloco.getId());
+
+			try {
+			for (int i = this.mi; i < array_bloco.length; i++) {
+				if (array_bloco[i] == bloco.getId()) {
+					int id = bloco.getId();
+					bloco.setI(i);
+
+					while (array_bloco[i] == id) {
+						i++;
+					}
+					bloco.setF(i);
+
+					System.out.println(
+							"Bloco id: " + bloco.getId() + " inicio: " + bloco.getI() + " final: " + bloco.getF());
+				}
+
+			}
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 		/*
 		 * Algoritmo de compactaçao: move todos os processos para um extremo da memória.
 		 * Todos buracos se movem para o inicio do array, formando um grande buraco de
@@ -234,7 +285,7 @@ public class GerMemoria {
 		 * Precisa atualizar posição dos blocos na memória para cada um!
 		 */
 
-		int[] array_bloco = bloco_inicial.getBloco();
+		// int[] array_bloco = bloco_inicial.getBloco();
 
 		Arrays.sort(array_bloco);
 
@@ -264,11 +315,11 @@ public class GerMemoria {
 			}
 		}
 
-		System.out.println(this.bloco_inicial.getI());
-		System.out.println("this.mi " + this.mi);
-		System.out.println(this.mf);
-		System.out.println(this.bloco_inicial.getF());
-		System.out.println(array_bloco.length);
+		// System.out.println(this.bloco_inicial.getI());
+		// System.out.println("this.mi " + this.mi);
+		// System.out.println(this.mf);
+		// System.out.println(this.bloco_inicial.getF());
+		// System.out.println(array_bloco.length);
 
 		int tamanhoteste = array_bloco.length + this.mi;
 		int c = this.mi;
@@ -280,19 +331,19 @@ public class GerMemoria {
 
 				// this.bloco_inicial.setI(i);
 				Bloco a = this.getBlocoById(0);
-				System.out.println(a.getId());
+				// System.out.println(a.getId());
 				a.setI(i);
-				System.out.println(this.bloco_inicial.getI());
+				// System.out.println(this.bloco_inicial.getI());
 				while (array_bloco[i] == 0) {
 					i++;
 				}
 				// this.bloco_inicial.setF(i + 1);
 				a.setF((i + c) + 1);
-				System.out.println(this.bloco_inicial.getF());
+				// System.out.println(this.bloco_inicial.getF());
 				a.setTamanho(this.bloco_inicial.getF() - this.bloco_inicial.getI());
 				// this.bloco_inicial.setTamanho(this.bloco_inicial.getF() -
 				// this.bloco_inicial.getI());
-				System.out.println(this.bloco_inicial.getTamanho());
+				// System.out.println(this.bloco_inicial.getTamanho());
 			} else {
 
 				for (int n : ids) {
@@ -312,8 +363,9 @@ public class GerMemoria {
 			}
 
 		}
-		System.out.println("bloco de livres: i:  " + this.bloco_inicial.getI() + " f: " + this.bloco_inicial.getF());
-		System.out.println("DEPOIS DA FRAG:::::::");
+		// System.out.println("bloco de livres: i: " + this.bloco_inicial.getI() + " f:
+		// " + this.bloco_inicial.getF());
+		// System.out.println("DEPOIS DA FRAG:::::::");
 		printTabela();
 
 		bloco_inicial.setBloco(array_bloco);

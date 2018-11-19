@@ -21,8 +21,10 @@ public class App {
 		// ger.readFile(file_name);
 		ger.readFile("teste.txt");
 
+		System.out.println();
+		
 		// cria bloco inicial
-		Bloco b = new Bloco(ger.getMi(), ger.getMf(),ger.getMf()-ger.getMi(),0);
+		Bloco b = new Bloco(ger.getMi(), ger.getMf(),ger.getMf(),0);
 
 		GerMemoria gerMem = new GerMemoria(ger.getMi(), ger.getMf(), ger, b);
 		
