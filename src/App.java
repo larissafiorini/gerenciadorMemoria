@@ -19,7 +19,7 @@ public class App {
 		
 		GerBlocos ger = new GerBlocos();
 		// ger.readFile(file_name);
-		ger.readFile("teste2.txt");
+		ger.readFile("teste.txt");
 
 		System.out.println();
 		

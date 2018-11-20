@@ -79,10 +79,10 @@ public class GerMemoria {
 					fragmentar();
 					printTabela();
 
-//					int[] s2 = solicitacao(valores[i], atual);
-					
-//
-//					System.out.println("ALOCADO: " + s2[0] + " , " + s2[1]);
+					// int[] s2 = solicitacao(valores[i], atual);
+
+					//
+					// System.out.println("ALOCADO: " + s2[0] + " , " + s2[1]);
 
 					printTabela();
 					System.out.println(bloco_inicial.toString());
@@ -192,7 +192,7 @@ public class GerMemoria {
 		if (atual == null)
 			return null;
 
-//		for (int i = atual.getI(); i < atual.getF(); i++) {
+		// for (int i = atual.getI(); i < atual.getF(); i++) {
 		for (int i = this.mi; i < array_bloco.length; i++) {
 			// realiza liberacao do bloco solicitado
 			if (array_bloco[i] == valor) {
@@ -237,190 +237,226 @@ public class GerMemoria {
 
 		bloco_inicial.setBloco(array_bloco);
 		System.out.println(bloco_inicial.toString());
+
+		System.out.println(this.bloco_inicial.getBloco().length);
+		array_bloco = this.bloco_inicial.getBloco();
+		System.out.println(array_bloco.length);
 		
-//		
-//		
-//
-//		ArrayList<Bloco> novatab = new ArrayList<Bloco>();
-//
-//		for (int i = 0; i < array_bloco.length; i++) {
-//
-//			System.out.println(i);
-//			if (array_bloco[i] == 6) {
-//				System.out.println(i);
-//
-//				while (array_bloco[i] == 6) {
-//					i++;
-//				}
-//
-//				System.out.println(i);
-//
-//			}
-//		}
-//
-//		// for (Bloco bloco : this.tabela) {
-//		// System.out.println(bloco.getId() + " inicio " + bloco.getI() + " final " +
-//		// bloco.getF());
-//		//
-//		// try {
-//		// for (int i = 0; i < array_bloco.length; i++) {
-//		//
-//		// if (array_bloco[i] == bloco.getId()) {
-//		// System.out.println(i + " id: " + bloco.getId());
-//		//
-//		// while (array_bloco[i] == bloco.getId()) {
-//		// i++;
-//		// }
-//		//
-//		// System.out.println(i + " id: " + bloco.getId());
-//		// break;
-//		// }
-//		// }
-//		// } catch (Exception e) {
-//		// // TODO: handle exception
-//		// }
-//		// }
-//
-//		for (int i = 0; i < array_bloco.length; i++) {
-//			System.out.println("i: " + i + " " + array_bloco[i]);
-//
-//			if (array_bloco[i] == 0) {
-//
-//				this.tabela.get(0).setI(i);
-//
-//				while (array_bloco[i] == 0) {
-//					i++;
-//				}
-//				this.tabela.get(0).setF(i);
-//			}
-//
-//		}
-//		printTabela();
-//
-//		Bloco teste = this.getBlocoById(0);
-//		this.tabela.remove(this.tabela.indexOf(teste));
-//		teste = this.getBlocoById(0);
-//		this.tabela.remove(this.tabela.indexOf(teste));
-//		teste = this.getBlocoById(0);
-//		this.tabela.remove(this.tabela.indexOf(teste));
-//
-//		System.out.println("Tabela dentro de frag testing... " + array_bloco.length);
-//		for (Bloco bloco : this.tabela) {
-//			System.out.println(bloco.getId());
-//
-//			try {
-//				for (int i = this.mi; i < array_bloco.length; i++) {
-//					if (array_bloco[i] == bloco.getId()) {
-//						int id = bloco.getId();
-//						bloco.setI(i);
-//
-//						while (array_bloco[i] == id) {
-//							i++;
-//						}
-//						bloco.setF(i);
-//
-//						System.out.println(
-//								"Bloco id: " + bloco.getId() + " inicio: " + bloco.getI() + " final: " + bloco.getF());
-//					}
-//
-//				}
-//			} catch (Exception e) {
-//				// TODO: handle exception
-//			}
-//		}
-//		/*
-//		 * Algoritmo de compactaçao: move todos os processos para um extremo da memória.
-//		 * Todos buracos se movem para o inicio do array, formando um grande buraco de
-//		 * memória disponível.
-//		 * 
-//		 * Precisa atualizar posição dos blocos na memória para cada um!
-//		 */
-//
-//		// int[] array_bloco = bloco_inicial.getBloco();
-//
-//		Arrays.sort(array_bloco);
-//
-//		// for (int i = 0; i < array_bloco.length; i++) {
-//		// Arrays.sort(array_bloco);
-//		// }
-//
-//		ArrayList<Integer> ids = new ArrayList<Integer>();
-//		boolean check = false;
-//		// Get id de cada bloco existente
-//		for (Bloco bb : this.tabela) {
-//			System.out.println("bloco id: " + bb.getId());
-//			for (Integer inte : ids) {
-//				if (inte == bb.getId()) {
-//
-//					check = true;
-//
-//				}
-//			}
-//			if (check == false)
-//				ids.add(bb.getId());
-//		}
-//		// remove duplicadas
-//		for (int j = 1; j < this.tabela.size(); j++) {
-//			if (this.tabela.get(j).getId() == 0) {
-//				this.tabela.remove(this.tabela.get(j));
-//			}
-//		}
-//
-//		// System.out.println(this.bloco_inicial.getI());
-//		// System.out.println("this.mi " + this.mi);
-//		// System.out.println(this.mf);
-//		// System.out.println(this.bloco_inicial.getF());
-//		// System.out.println(array_bloco.length);
-//
-//		int tamanhoteste = array_bloco.length + this.mi;
-//		int c = this.mi;
-//
-//		// atualiza tabela com valores após fragmentacao
-//		for (int i = this.mi; i < array_bloco.length; i++) {
-//
-//			if (array_bloco[i] == 0) {
-//
-//				// this.bloco_inicial.setI(i);
-//				Bloco a = this.getBlocoById(0);
-//				// System.out.println(a.getId());
-//				a.setI(i);
-//				// System.out.println(this.bloco_inicial.getI());
-//				while (array_bloco[i] == 0) {
-//					i++;
-//				}
-//				// this.bloco_inicial.setF(i + 1);
-//				a.setF((i + c) + 1);
-//				// System.out.println(this.bloco_inicial.getF());
-//				a.setTamanho(this.bloco_inicial.getF() - this.bloco_inicial.getI());
-//				// this.bloco_inicial.setTamanho(this.bloco_inicial.getF() -
-//				// this.bloco_inicial.getI());
-//				// System.out.println(this.bloco_inicial.getTamanho());
-//			} else {
-//
-//				for (int n : ids) {
-//
-//					if (array_bloco[i] == n) {
-//
-//						Bloco a = this.getBlocoById(n);
-//						a.setI(i + c);
-//
-//						while (array_bloco[i] == n) {
-//							i++;
-//						}
-//						a.setF((i + c) + 1);
-//
-//					}
-//				}
-//			}
-//
-//		}
-//		// System.out.println("bloco de livres: i: " + this.bloco_inicial.getI() + " f:
-//		// " + this.bloco_inicial.getF());
-//		// System.out.println("DEPOIS DA FRAG:::::::");
-//		printTabela();
-//
-//		bloco_inicial.setBloco(array_bloco);
-//		System.out.println(bloco_inicial.toString());
+		
+
+		for (Bloco b : this.tabela) {
+			System.out.println("bloco " + b.getId() + "  " + b.getI() + " " + b.getF() + " tamanho; " + b.getTamanho());
+
+			for (int i = 0; i < this.bloco_inicial.getBloco().length; i++) {
+				try {
+					if (array_bloco[i] == b.getId()) {
+
+						System.out.println(b.getId() + " comeca em " + i);
+						b.setI(i);
+
+						while (array_bloco[i] == b.getId()) {
+							i++;
+						}
+						b.setF(i);
+						System.out.println(" termina em " + i);
+						break;
+					}
+				} catch (Exception e) {
+					b.setF(this.bloco_inicial.getBloco().length);
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+
+		System.out.println("fim");
+		printTabela();
+
+		//
+		//
+		//
+		// ArrayList<Bloco> novatab = new ArrayList<Bloco>();
+		//
+		// for (int i = 0; i < array_bloco.length; i++) {
+		//
+		// System.out.println(i);
+		// if (array_bloco[i] == 6) {
+		// System.out.println(i);
+		//
+		// while (array_bloco[i] == 6) {
+		// i++;
+		// }
+		//
+		// System.out.println(i);
+		//
+		// }
+		// }
+		//
+		// // for (Bloco bloco : this.tabela) {
+		// // System.out.println(bloco.getId() + " inicio " + bloco.getI() + " final " +
+		// // bloco.getF());
+		// //
+		// // try {
+		// // for (int i = 0; i < array_bloco.length; i++) {
+		// //
+		// // if (array_bloco[i] == bloco.getId()) {
+		// // System.out.println(i + " id: " + bloco.getId());
+		// //
+		// // while (array_bloco[i] == bloco.getId()) {
+		// // i++;
+		// // }
+		// //
+		// // System.out.println(i + " id: " + bloco.getId());
+		// // break;
+		// // }
+		// // }
+		// // } catch (Exception e) {
+		// // // TODO: handle exception
+		// // }
+		// // }
+		//
+		// for (int i = 0; i < array_bloco.length; i++) {
+		// System.out.println("i: " + i + " " + array_bloco[i]);
+		//
+		// if (array_bloco[i] == 0) {
+		//
+		// this.tabela.get(0).setI(i);
+		//
+		// while (array_bloco[i] == 0) {
+		// i++;
+		// }
+		// this.tabela.get(0).setF(i);
+		// }
+		//
+		// }
+		// printTabela();
+		//
+		// Bloco teste = this.getBlocoById(0);
+		// this.tabela.remove(this.tabela.indexOf(teste));
+		// teste = this.getBlocoById(0);
+		// this.tabela.remove(this.tabela.indexOf(teste));
+		// teste = this.getBlocoById(0);
+		// this.tabela.remove(this.tabela.indexOf(teste));
+		//
+		// System.out.println("Tabela dentro de frag testing... " + array_bloco.length);
+		// for (Bloco bloco : this.tabela) {
+		// System.out.println(bloco.getId());
+		//
+		// try {
+		// for (int i = this.mi; i < array_bloco.length; i++) {
+		// if (array_bloco[i] == bloco.getId()) {
+		// int id = bloco.getId();
+		// bloco.setI(i);
+		//
+		// while (array_bloco[i] == id) {
+		// i++;
+		// }
+		// bloco.setF(i);
+		//
+		// System.out.println(
+		// "Bloco id: " + bloco.getId() + " inicio: " + bloco.getI() + " final: " +
+		// bloco.getF());
+		// }
+		//
+		// }
+		// } catch (Exception e) {
+		// // TODO: handle exception
+		// }
+		// }
+		// /*
+		// * Algoritmo de compactaçao: move todos os processos para um extremo da
+		// memória.
+		// * Todos buracos se movem para o inicio do array, formando um grande buraco de
+		// * memória disponível.
+		// *
+		// * Precisa atualizar posição dos blocos na memória para cada um!
+		// */
+		//
+		// // int[] array_bloco = bloco_inicial.getBloco();
+		//
+		// Arrays.sort(array_bloco);
+		//
+		// // for (int i = 0; i < array_bloco.length; i++) {
+		// // Arrays.sort(array_bloco);
+		// // }
+		//
+		// ArrayList<Integer> ids = new ArrayList<Integer>();
+		// boolean check = false;
+		// // Get id de cada bloco existente
+		// for (Bloco bb : this.tabela) {
+		// System.out.println("bloco id: " + bb.getId());
+		// for (Integer inte : ids) {
+		// if (inte == bb.getId()) {
+		//
+		// check = true;
+		//
+		// }
+		// }
+		// if (check == false)
+		// ids.add(bb.getId());
+		// }
+		// // remove duplicadas
+		// for (int j = 1; j < this.tabela.size(); j++) {
+		// if (this.tabela.get(j).getId() == 0) {
+		// this.tabela.remove(this.tabela.get(j));
+		// }
+		// }
+		//
+		// // System.out.println(this.bloco_inicial.getI());
+		// // System.out.println("this.mi " + this.mi);
+		// // System.out.println(this.mf);
+		// // System.out.println(this.bloco_inicial.getF());
+		// // System.out.println(array_bloco.length);
+		//
+		// int tamanhoteste = array_bloco.length + this.mi;
+		// int c = this.mi;
+		//
+		// // atualiza tabela com valores após fragmentacao
+		// for (int i = this.mi; i < array_bloco.length; i++) {
+		//
+		// if (array_bloco[i] == 0) {
+		//
+		// // this.bloco_inicial.setI(i);
+		// Bloco a = this.getBlocoById(0);
+		// // System.out.println(a.getId());
+		// a.setI(i);
+		// // System.out.println(this.bloco_inicial.getI());
+		// while (array_bloco[i] == 0) {
+		// i++;
+		// }
+		// // this.bloco_inicial.setF(i + 1);
+		// a.setF((i + c) + 1);
+		// // System.out.println(this.bloco_inicial.getF());
+		// a.setTamanho(this.bloco_inicial.getF() - this.bloco_inicial.getI());
+		// // this.bloco_inicial.setTamanho(this.bloco_inicial.getF() -
+		// // this.bloco_inicial.getI());
+		// // System.out.println(this.bloco_inicial.getTamanho());
+		// } else {
+		//
+		// for (int n : ids) {
+		//
+		// if (array_bloco[i] == n) {
+		//
+		// Bloco a = this.getBlocoById(n);
+		// a.setI(i + c);
+		//
+		// while (array_bloco[i] == n) {
+		// i++;
+		// }
+		// a.setF((i + c) + 1);
+		//
+		// }
+		// }
+		// }
+		//
+		// }
+		// // System.out.println("bloco de livres: i: " + this.bloco_inicial.getI() + "
+		// f:
+		// // " + this.bloco_inicial.getF());
+		// // System.out.println("DEPOIS DA FRAG:::::::");
+		// printTabela();
+		//
+		// bloco_inicial.setBloco(array_bloco);
+		// System.out.println(bloco_inicial.toString());
 	}
 
 	public void printTabela() {
