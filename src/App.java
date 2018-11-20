@@ -16,13 +16,10 @@ public class App {
 		// String file_name = scan.nextLine();
 		// scan.close();
 		
-		
 		GerBlocos ger = new GerBlocos();
 		// ger.readFile(file_name);
 		ger.readFile("teste2.txt");
 
-		System.out.println();
-		
 		// cria bloco inicial
 		Bloco b = new Bloco(ger.getMi(), ger.getMf(),ger.getMf(),0);
 
