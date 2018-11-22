@@ -74,6 +74,7 @@ public class GerMemoria {
 				if (s != null) {
 
 					System.out.println("Solicitação de alocacao atendida! ALOCADO: " + s[0] + "-" + s[1]);
+//					printTabela();
 
 				} else {
 
@@ -97,15 +98,16 @@ public class GerMemoria {
 				// verifica se liberacao conseguiu ser realizada
 				if (l != null) {
 					System.out.println("Solicitação de liberacao atendida! LIBERADO: " + l[0] + "-" + l[1]);
-
+					juntaLivres();
+					
 					// Verifica se solicitacao pode ser atendida no momento que a liberacao ocorreu
 					executaFilaEspera();
-
 				}
 			}
 		}
 		Collections.sort(this.tabela, (p1, p2) -> p1.getI() - p2.getI());
 		System.out.println("\nTabela final: ");
+		juntaLivres();
 		printTabela();
 		System.out.println("\nMemoria final: ");
 		System.out.println(bloco_inicial.toString());
@@ -149,7 +151,7 @@ public class GerMemoria {
 						// atualiza bloco inicial
 						this.tabela.get(0).setI(i + valor);
 						this.tabela.get(0).setTamanho(this.tabela.get(0).getF() - this.tabela.get(0).getI());
-						
+
 						if ((this.tabela.get(0).getF() - this.tabela.get(0).getI()) < 0)
 							this.tabela.remove(0);
 						else
@@ -159,7 +161,7 @@ public class GerMemoria {
 						// atualiza bloco atual
 						this.tabela.add(atual);
 						bloco_inicial.setBloco(array_bloco);
-
+						
 						// retorna identificador para area de memoria alocada
 						return id_area;
 					}
@@ -191,7 +193,6 @@ public class GerMemoria {
 				libera = true;
 			}
 		}
-
 		if (libera == true) {
 			int[] id_area = new int[2];
 			id_area[0] = atual.getI();
@@ -269,15 +270,23 @@ public class GerMemoria {
 		hs.addAll(this.tabela);
 		this.tabela.clear();
 		this.tabela.addAll(hs);
+
+		for (int i = 0; i < this.tabela.size(); i++) {
+			for (int j = i + 1; j < this.tabela.size(); j++) {
+				if (this.tabela.get(i).getI() == this.tabela.get(j).getI()) {
+					this.tabela.remove(0);
+				}	
+			}
+		}
 		
 		System.out.println("\n**********************************************************************");
 		System.out.println("TABELA ");
 		for (Bloco bloco : this.tabela) {
 			if (bloco.getId() == 0)
-				System.out.println("\n" + bloco.getI() + "-" + bloco.getF() + "    LIVRE (tamanho: "
-						+ bloco.getTamanho() + ") ");
+				System.out.println(
+						"\n" + bloco.getI() + "-" + bloco.getF() + "    LIVRE (tamanho: " + bloco.getTamanho() + ") ");
 			else
-				System.out.println("\n"+ bloco.getI() + "-" + bloco.getF() +"    Bloco "+ bloco.getId()
+				System.out.println("\n" + bloco.getI() + "-" + bloco.getF() + "    Bloco " + bloco.getId()
 						+ " (tamanho: " + bloco.getTamanho() + ") ");
 		}
 		System.out.println("**********************************************************************\n");
@@ -297,8 +306,25 @@ public class GerMemoria {
 	// agora executar
 	public void executaFilaEspera() {
 		for (Bloco bloco : this.fila_espera) {
-			this.alocacao(bloco.getF() - bloco.getI(), bloco);
-		}
+			int[] s = this.alocacao(bloco.getF() - bloco.getI(), bloco);
+			
+			
+			if (s != null) {
+
+				System.out.println("Solicitação de alocacao atendida! ALOCADO: " + s[0] + "-" + s[1]);
+//				printTabela();
+
+			} else {
+
+				System.out.println("Deve entrar na fila e aguardar liberação...");
+
+				fragmentacao();
+
+//				System.out.println(bloco_inicial.toString());
+				
+			
+		}}
+	
 	}
 
 	// se dois blocos livres forem vizinhos, junta os dois e vira um só bloco
@@ -312,6 +338,7 @@ public class GerMemoria {
 						this.tabela.remove(j);
 					}
 				}
+
 			}
 		}
 	}
