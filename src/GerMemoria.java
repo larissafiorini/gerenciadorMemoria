@@ -62,8 +62,8 @@ public class GerMemoria {
 			// verifica se foi realizada solicitacao de alocacao de memoria
 			if (operacoes[i].contains("S")) {
 
-				Bloco atual = new Bloco(this.bloco_inicial.getI(), this.bloco_inicial.getI() + (valores[i] ),
-						valores[i], id_cont);
+				Bloco atual = new Bloco(this.bloco_inicial.getI(), this.bloco_inicial.getI() + (valores[i]), valores[i],
+						id_cont);
 
 				// realiza alocacao
 				int[] s = alocacao(valores[i], atual);
@@ -127,7 +127,6 @@ public class GerMemoria {
 							aloca = false;
 							break;
 						}
-
 					}
 					// se conseguiu realizar solicitacao, atualiza valores da posicao alocada
 					if (aloca == true) {
@@ -147,16 +146,16 @@ public class GerMemoria {
 						// atualiza bloco inicial
 						this.tabela.get(0).setI(i + valor);
 						this.tabela.get(0).setTamanho(this.tabela.get(0).getF() - this.tabela.get(0).getI());
-//						
-//						if(this.tabela.get(0).getTamanho() < this.mi)
-//							this.tabela.remove(0);
-						
-					
+						//
+						// if(this.tabela.get(0).getTamanho() < this.mi)
+						// this.tabela.remove(0);
+
 						if ((this.tabela.get(0).getF() - this.tabela.get(0).getI()) < 0)
 							this.tabela.remove(0);
 						else
 							this.tabela.get(0).setTamanho(this.tabela.get(0).getF() - this.tabela.get(0).getI());
 
+						juntaLivres();
 						// atualiza bloco atual
 						this.tabela.add(atual);
 						bloco_inicial.setBloco(array_bloco);
@@ -204,6 +203,8 @@ public class GerMemoria {
 			// seta como bloco livre
 			atual.setId(0);
 
+			juntaLivres();
+
 			bloco_inicial.setBloco(array_bloco);
 			return id_area;
 		} else {
@@ -214,9 +215,9 @@ public class GerMemoria {
 
 	public void fragmentacao() {
 		/*
-		 * Algoritmo de compactaçao: move todos os processos para um extremo da 
-		 * memória. Todos buracos se movem para o inicio do array, formando um grande
-		 * buraco de memória disponivel.
+		 * Algoritmo de compactaçao: move todos os processos para um extremo da memória.
+		 * Todos buracos se movem para o inicio do array, formando um grande buraco de
+		 * memória disponivel.
 		 * 
 		 */
 
@@ -259,8 +260,6 @@ public class GerMemoria {
 					System.out.println(e.getMessage());
 				}
 			}
-
-			
 		}
 		Set<Bloco> hs = new LinkedHashSet<>();
 		hs.addAll(this.tabela);
@@ -269,6 +268,7 @@ public class GerMemoria {
 		printTabela();
 	}
 
+	// mostra para o usuario como estao alocados os blocos na memoria
 	public void printTabela() {
 		System.out.println("\n**********************************************************************");
 		System.out.println("TABELA ");
@@ -283,6 +283,7 @@ public class GerMemoria {
 		System.out.println("**********************************************************************\n");
 	}
 
+	// busca bloco na tabela pelo seu identificador
 	public Bloco getBlocoById(int id) {
 		for (Bloco b : this.tabela) {
 			if (b.getId() == id) {
@@ -292,13 +293,26 @@ public class GerMemoria {
 		return null;
 	}
 
+	// quando ocorre liberacao, procura se processos que estavam esperando podem
+	// agora executar
 	public void executaFilaEspera() {
-		// depois que ocorre liberação, pesquisa se algum processo pode executar
 		for (Bloco bloco : this.fila_espera) {
-
 			this.alocacao(bloco.getF() - bloco.getI(), bloco);
-
 		}
 	}
 
+	// se dois blocos livres forem vizinhos, junta os dois e vira um só bloco
+	public void juntaLivres() {
+		for (int i = 0; i < this.tabela.size(); i++) {
+			for (int j = i + 1; j < this.tabela.size(); j++) {
+				if (this.tabela.get(i).getId() == 0 && this.tabela.get(j).getId() == 0) {
+					if ((this.tabela.get(i).getF() == this.tabela.get(j).getI())) {
+						this.tabela.get(i).setF(this.tabela.get(j).getF());
+						this.tabela.get(i).setTamanho(this.tabela.get(i).getF() - this.tabela.get(i).getI());
+						this.tabela.remove(j);
+					}
+				}
+			}
+		}
+	}
 }
