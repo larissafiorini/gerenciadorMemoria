@@ -3,8 +3,12 @@ import java.util.Random;
 import java.util.Scanner;
 /*
  * Nome: Larissa Fiorini Martins
+ * Data: 22/10/2018
  * 
- * Gerencia de memoria por particoes variaveis
+ * Gerencia de memoria por particoes variaveis. Esse programa realiza uma solucao de software para 
+ * gerenciar solicitacoes de alocacao e liberacao de processos na memoria. Por utilizar particoes variaveis,
+ * pode acontecer fragmentacao externa no sistema. Quando ocorre fragmentacao, o sistema realiza a compactacao
+ * do bloco de memoria.
  * 
  * */
 

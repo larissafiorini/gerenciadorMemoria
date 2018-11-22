@@ -4,12 +4,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 /*
- * Gerencia solicitações de alocacoes e liberacoes. Quando falta espaco, realiza fragmentacao.
+ * Nome: Larissa Fiorini Martins
+ * Data: 22/10/2018
+ * 
+ * Gerencia de memoria por particoes variaveis. Esse programa realiza uma solucao de software para 
+ * gerenciar solicitacoes de alocacao e liberacao de processos na memoria. Por utilizar particoes variaveis,
+ * pode acontecer fragmentacao externa no sistema. Quando ocorre fragmentacao, o sistema realiza a compactacao
+ * do bloco de memoria.
+ * 
+/*
+ * Classe GerMemoria: Gerencia solicitações de alocacoes e liberacoes de memoria. Quando acontece fragmentacao
+ * externa, realiza compactacao do bloco de memoria.
  * Uso do algoritmo First Fit para alocacoes.
  * 
- * 
+ *   
  * */
 
 public class GerMemoria {
@@ -53,11 +62,11 @@ public class GerMemoria {
 			// verifica se foi realizada solicitacao de alocacao de memoria
 			if (operacoes[i].contains("S")) {
 
-				Bloco atual = new Bloco(this.bloco_inicial.getI(), this.bloco_inicial.getI() + (valores[i] - 1),
+				Bloco atual = new Bloco(this.bloco_inicial.getI(), this.bloco_inicial.getI() + (valores[i] ),
 						valores[i], id_cont);
 
 				// realiza alocacao
-				int[] s = solicitacao(valores[i], atual);
+				int[] s = alocacao(valores[i], atual);
 
 				// verifica se alocacao conseguiu ser realizada
 				if (s != null) {
@@ -69,7 +78,7 @@ public class GerMemoria {
 
 					System.out.println("Deve entrar na fila e aguardar liberação...");
 
-					fragmentar();
+					fragmentacao();
 
 					System.out.println(bloco_inicial.toString());
 					// add processo que nao pode ser executado na fila de espera, aguardando
@@ -92,16 +101,15 @@ public class GerMemoria {
 					// Verifica se solicitacao pode ser atendida no momento que a liberacao ocorreu
 					executaFilaEspera();
 
-				} else
-					System.out.println("Não conseguiu liberar.");
+				}
 			}
 		}
 		System.out.println("\nMemoria final: ");
 		System.out.println(bloco_inicial.toString());
 	}
 
-	public int[] solicitacao(int valor, Bloco atual) {
-		System.out.println("------------ALOCAÇÃO------------: " + valor);
+	public int[] alocacao(int valor, Bloco atual) {
+		System.out.println("------------ALOCACAO: " + valor);
 
 		int[] array_bloco = bloco_inicial.getBloco();
 
@@ -138,6 +146,12 @@ public class GerMemoria {
 
 						// atualiza bloco inicial
 						this.tabela.get(0).setI(i + valor);
+						this.tabela.get(0).setTamanho(this.tabela.get(0).getF() - this.tabela.get(0).getI());
+//						
+//						if(this.tabela.get(0).getTamanho() < this.mi)
+//							this.tabela.remove(0);
+						
+					
 						if ((this.tabela.get(0).getF() - this.tabela.get(0).getI()) < 0)
 							this.tabela.remove(0);
 						else
@@ -161,7 +175,7 @@ public class GerMemoria {
 	}
 
 	public int[] liberacao(int valor) {
-		System.out.println("------------LIBERAÇÃO------------: " + valor);
+		System.out.println("------------LIBERACAO: " + valor);
 
 		boolean libera = false;
 
@@ -192,13 +206,15 @@ public class GerMemoria {
 
 			bloco_inicial.setBloco(array_bloco);
 			return id_area;
-		} else
+		} else {
+			System.out.println("Nao encontrou o ID do bloco para liberar.");
 			return null;
+		}
 	}
 
-	public void fragmentar() {
+	public void fragmentacao() {
 		/*
-		 * Algoritmo de compactaçao: move todos os processos para um extremo da //
+		 * Algoritmo de compactaçao: move todos os processos para um extremo da 
 		 * memória. Todos buracos se movem para o inicio do array, formando um grande
 		 * buraco de memória disponivel.
 		 * 
@@ -225,7 +241,7 @@ public class GerMemoria {
 
 		// atualiza tabela com valores de blocos na memória
 		for (Bloco b : this.tabela) {
-			for (int i = 0; i < this.bloco_inicial.getBloco().length; i++) {
+			for (int i = this.mi; i < this.bloco_inicial.getBloco().length; i++) {
 				try {
 					if (array_bloco[i] == b.getId()) {
 
@@ -235,6 +251,7 @@ public class GerMemoria {
 							i++;
 						}
 						b.setF(i);
+						b.setTamanho(b.getF() - b.getI());
 						break;
 					}
 				} catch (Exception e) {
@@ -242,6 +259,8 @@ public class GerMemoria {
 					System.out.println(e.getMessage());
 				}
 			}
+
+			
 		}
 		Set<Bloco> hs = new LinkedHashSet<>();
 		hs.addAll(this.tabela);
@@ -277,7 +296,7 @@ public class GerMemoria {
 		// depois que ocorre liberação, pesquisa se algum processo pode executar
 		for (Bloco bloco : this.fila_espera) {
 
-			this.solicitacao(bloco.getF() - bloco.getI(), bloco);
+			this.alocacao(bloco.getF() - bloco.getI(), bloco);
 
 		}
 	}
