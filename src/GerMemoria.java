@@ -74,7 +74,6 @@ public class GerMemoria {
 				if (s != null) {
 
 					System.out.println("Solicitação de alocacao atendida! ALOCADO: " + s[0] + "-" + s[1]);
-					printTabela();
 
 				} else {
 
@@ -97,8 +96,7 @@ public class GerMemoria {
 
 				// verifica se liberacao conseguiu ser realizada
 				if (l != null) {
-					System.out.println("Solicitação de liberacao atendida! LIBERADO: " + l[0] + " , " + l[1]);
-					printTabela();
+					System.out.println("Solicitação de liberacao atendida! LIBERADO: " + l[0] + "-" + l[1]);
 
 					// Verifica se solicitacao pode ser atendida no momento que a liberacao ocorreu
 					executaFilaEspera();
@@ -107,13 +105,14 @@ public class GerMemoria {
 			}
 		}
 		Collections.sort(this.tabela, (p1, p2) -> p1.getI() - p2.getI());
+		System.out.println("\nTabela final: ");
 		printTabela();
 		System.out.println("\nMemoria final: ");
 		System.out.println(bloco_inicial.toString());
 	}
 
 	public int[] alocacao(int valor, Bloco atual) {
-		System.out.println("------------ALOCACAO: " + valor);
+		System.out.println("ALOCACAO: " + valor);
 
 		int[] array_bloco = bloco_inicial.getBloco();
 
@@ -135,7 +134,7 @@ public class GerMemoria {
 					// se conseguiu realizar solicitacao, atualiza valores da posicao alocada
 					if (aloca == true) {
 
-						// coloca posicoes da memoria
+						// atualiza alocacoes na memoria
 						atual.setI(i);
 						atual.setF(i + valor);
 
@@ -150,10 +149,7 @@ public class GerMemoria {
 						// atualiza bloco inicial
 						this.tabela.get(0).setI(i + valor);
 						this.tabela.get(0).setTamanho(this.tabela.get(0).getF() - this.tabela.get(0).getI());
-						//
-						// if(this.tabela.get(0).getTamanho() < this.mi)
-						// this.tabela.remove(0);
-
+						
 						if ((this.tabela.get(0).getF() - this.tabela.get(0).getI()) < 0)
 							this.tabela.remove(0);
 						else
@@ -169,7 +165,6 @@ public class GerMemoria {
 					}
 				}
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
 				return null;
 			}
 			aloca = true;
@@ -178,7 +173,7 @@ public class GerMemoria {
 	}
 
 	public int[] liberacao(int valor) {
-		System.out.println("------------LIBERACAO: " + valor);
+		System.out.println("LIBERACAO: " + valor);
 
 		boolean libera = false;
 
@@ -198,8 +193,6 @@ public class GerMemoria {
 		}
 
 		if (libera == true) {
-			System.out.println("Conseguiu liberar!");
-
 			int[] id_area = new int[2];
 			id_area[0] = atual.getI();
 			id_area[1] = atual.getF();
@@ -249,9 +242,7 @@ public class GerMemoria {
 			for (int i = this.mi; i < this.bloco_inicial.getBloco().length; i++) {
 				try {
 					if (array_bloco[i] == b.getId()) {
-
 						b.setI(i);
-
 						while (array_bloco[i] == b.getId()) {
 							i++;
 						}
@@ -261,7 +252,6 @@ public class GerMemoria {
 					}
 				} catch (Exception e) {
 					b.setF(this.bloco_inicial.getBloco().length);
-					System.out.println(e.getMessage());
 				}
 			}
 		}
@@ -279,26 +269,15 @@ public class GerMemoria {
 		hs.addAll(this.tabela);
 		this.tabela.clear();
 		this.tabela.addAll(hs);
-
-//		Collections.sort(this.tabela, new Comparator<Bloco>() {
-//			@Override
-//			public int compare(Bloco p1, Bloco p2) {
-//				return p1.getI() - p2.getI(); // Ascending
-//			}
-//
-//		});
-		
-//		Collections.sort( this.tabela, (player1, player2) -> player1.getI().compareTo(player2.getI());
-//		Collections.sort(this.tabela, (p1, p2) -> p2.getId() - p1.getI());
 		
 		System.out.println("\n**********************************************************************");
 		System.out.println("TABELA ");
 		for (Bloco bloco : this.tabela) {
 			if (bloco.getId() == 0)
-				System.out.println("\nBloco LIVRE inicio: " + bloco.getI() + " fim: " + bloco.getF() + " (tamanho: "
+				System.out.println("\n" + bloco.getI() + "-" + bloco.getF() + "    LIVRE (tamanho: "
 						+ bloco.getTamanho() + ") ");
 			else
-				System.out.println("\nBloco " + bloco.getId() + " inicio: " + bloco.getI() + " fim: " + bloco.getF()
+				System.out.println("\n"+ bloco.getI() + "-" + bloco.getF() +"    Bloco "+ bloco.getId()
 						+ " (tamanho: " + bloco.getTamanho() + ") ");
 		}
 		System.out.println("**********************************************************************\n");
