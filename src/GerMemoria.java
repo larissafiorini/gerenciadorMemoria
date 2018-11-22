@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -104,6 +106,8 @@ public class GerMemoria {
 				}
 			}
 		}
+		Collections.sort(this.tabela, (p1, p2) -> p1.getI() - p2.getI());
+		printTabela();
 		System.out.println("\nMemoria final: ");
 		System.out.println(bloco_inicial.toString());
 	}
@@ -265,11 +269,28 @@ public class GerMemoria {
 		hs.addAll(this.tabela);
 		this.tabela.clear();
 		this.tabela.addAll(hs);
+		Collections.sort(this.tabela, (p1, p2) -> p1.getI() - p2.getI());
 		printTabela();
 	}
 
 	// mostra para o usuario como estao alocados os blocos na memoria
 	public void printTabela() {
+		Set<Bloco> hs = new LinkedHashSet<>();
+		hs.addAll(this.tabela);
+		this.tabela.clear();
+		this.tabela.addAll(hs);
+
+//		Collections.sort(this.tabela, new Comparator<Bloco>() {
+//			@Override
+//			public int compare(Bloco p1, Bloco p2) {
+//				return p1.getI() - p2.getI(); // Ascending
+//			}
+//
+//		});
+		
+//		Collections.sort( this.tabela, (player1, player2) -> player1.getI().compareTo(player2.getI());
+//		Collections.sort(this.tabela, (p1, p2) -> p2.getId() - p1.getI());
+		
 		System.out.println("\n**********************************************************************");
 		System.out.println("TABELA ");
 		for (Bloco bloco : this.tabela) {
