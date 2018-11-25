@@ -81,7 +81,7 @@ public class GerMemoria {
 					System.out.println("Deve entrar na fila e aguardar liberação...");
 
 					if (testaMemoriaInsuficiente(valores[i]))
-						System.out.println("\n--Nao tem memoria suficiente!--\n");
+						System.out.println("\n----Nao tem memoria suficiente!----\n");
 					else
 						fragmentacao();
 
@@ -313,19 +313,9 @@ public class GerMemoria {
 			if (s != null) {
 
 				System.out.println("Solicitação de alocacao atendida! ALOCADO: " + s[0] + "-" + s[1]);
-				// printTabela();
-
-			} else {
-
-				System.out.println("Deve entrar na fila e aguardar liberação...");
-
-				fragmentacao();
-
-				// System.out.println(bloco_inicial.toString());
 
 			}
 		}
-
 	}
 
 	// se dois blocos livres forem vizinhos, junta os dois e vira um só bloco
@@ -348,7 +338,7 @@ public class GerMemoria {
 	// alocacao. Caso nao consiga
 	// retorna true para memoria insuficiente
 	public boolean testaMemoriaInsuficiente(Integer valor_solicitacao) {
-		printTabela();
+		
 		int[] array_bloco = bloco_inicial.getBloco();
 		int cont = 0;
 		int ctam = 0;
