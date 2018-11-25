@@ -74,13 +74,16 @@ public class GerMemoria {
 				if (s != null) {
 
 					System.out.println("Solicitação de alocacao atendida! ALOCADO: " + s[0] + "-" + s[1]);
-//					printTabela();
+					// printTabela();
 
 				} else {
 
 					System.out.println("Deve entrar na fila e aguardar liberação...");
 
-					fragmentacao();
+					if (testaMemoriaInsuficiente(valores[i]))
+						System.out.println("\n--Nao tem memoria suficiente!--\n");
+					else
+						fragmentacao();
 
 					System.out.println(bloco_inicial.toString());
 					// add processo que nao pode ser executado na fila de espera, aguardando
@@ -99,7 +102,7 @@ public class GerMemoria {
 				if (l != null) {
 					System.out.println("Solicitação de liberacao atendida! LIBERADO: " + l[0] + "-" + l[1]);
 					juntaLivres();
-					
+
 					// Verifica se solicitacao pode ser atendida no momento que a liberacao ocorreu
 					executaFilaEspera();
 				}
@@ -161,7 +164,7 @@ public class GerMemoria {
 						// atualiza bloco atual
 						this.tabela.add(atual);
 						bloco_inicial.setBloco(array_bloco);
-						
+
 						// retorna identificador para area de memoria alocada
 						return id_area;
 					}
@@ -220,7 +223,6 @@ public class GerMemoria {
 		 */
 
 		System.out.println("\n------------FRAGMENTACAO EXTERNA------------\n");
-
 		int[] array_bloco = bloco_inicial.getBloco();
 
 		printTabela();
@@ -275,10 +277,10 @@ public class GerMemoria {
 			for (int j = i + 1; j < this.tabela.size(); j++) {
 				if (this.tabela.get(i).getI() == this.tabela.get(j).getI()) {
 					this.tabela.remove(0);
-				}	
+				}
 			}
 		}
-		
+
 		System.out.println("\n**********************************************************************");
 		System.out.println("TABELA ");
 		for (Bloco bloco : this.tabela) {
@@ -307,12 +309,11 @@ public class GerMemoria {
 	public void executaFilaEspera() {
 		for (Bloco bloco : this.fila_espera) {
 			int[] s = this.alocacao(bloco.getF() - bloco.getI(), bloco);
-			
-			
+
 			if (s != null) {
 
 				System.out.println("Solicitação de alocacao atendida! ALOCADO: " + s[0] + "-" + s[1]);
-//				printTabela();
+				// printTabela();
 
 			} else {
 
@@ -320,11 +321,11 @@ public class GerMemoria {
 
 				fragmentacao();
 
-//				System.out.println(bloco_inicial.toString());
-				
-			
-		}}
-	
+				// System.out.println(bloco_inicial.toString());
+
+			}
+		}
+
 	}
 
 	// se dois blocos livres forem vizinhos, junta os dois e vira um só bloco
@@ -341,5 +342,33 @@ public class GerMemoria {
 
 			}
 		}
+	}
+
+	// verifica se a soma dos blocos livres consegue atender a solicitacao de
+	// alocacao. Caso nao consiga
+	// retorna true para memoria insuficiente
+	public boolean testaMemoriaInsuficiente(Integer valor_solicitacao) {
+		printTabela();
+		int[] array_bloco = bloco_inicial.getBloco();
+		int cont = 0;
+		int ctam = 0;
+		for (int j = this.mi; j < this.bloco_inicial.getBloco().length; j++) {
+			try {
+				if (array_bloco[j] == 0) {
+					while (array_bloco[j] == 0) {
+						j++;
+						ctam++;
+					}
+					cont++;
+				}
+			} catch (Exception e) {
+				cont++;
+			}
+		}
+		if (ctam < valor_solicitacao)
+			return true;
+		else
+			return false;
+
 	}
 }
